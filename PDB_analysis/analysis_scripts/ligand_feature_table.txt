@@ -1,0 +1,71 @@
+69	EDL	375.3743	11	7	12	34.4	
+35	Arachidonic acid	304.4669	2	1	14	38.3	
+36	Novobiocin	612.6243	13	6	9	61.6	
+93	Maltose	342.2965	11	8	4	28.1	
+41	KCK	377.5027	9	9	14	39.1	
+50	KMK	405.5559	9	9	16	42.9	
+46	KHK	411.4991	11	10	15	42.8	
+47	KIK	387.5175	9	9	15	41.5	
+45	KGK	331.4112	9	9	13	34.2	
+44	KFK	421.5337	9	9	15	45.7	
+52	KPK	371.475	9	8	12	38.8	
+42	KDK	389.4472	11	10	15	38.5	
+55	KSK	361.4371	10	10	14	36.6	
+56	KTK	375.4637	10	10	14	38.4	
+59	KYK	437.5331	10	10	15	46.5	
+51	KNK	388.4625	11	11	15	39.3	
+53	KQK	402.4891	11	11	16	41.1	
+49	KLK	387.5175	9	9	15	41.5	
+96	Radicol	330.3319	6	2	0	33.5	
+39	Benzamidine	120.1518	2	3	1	14.3	
+79	Dihydro-nicotinamide-adenine-dinucleotide phosphate	745.420883	24	11	13		
+76	Nicotinamide-adenine-dinucleotide	662.4166	21	10	11		
+77	3-acetyl pyridine adenine dinucleotide	662.437	20	8	11		
+78	Nicotinamide purin-6-ol-dinucleotide	664.4099	21	9	11		
+66	2,6-bis(1-methylethyl)phenol	178.2707	1	1	2	22.4	
+67	2-bromo-2-chloro-1,1,1-trifluoroethane	197.3815	0	0	1	9.6	
+67	2-bromo-2-chloro-1,1,1-trifluoroethane	197.3815	0	0	1	9.6	
+28	Maltotriose	15.9994	1	2	0	1.5	
+80	Docosa-4,7,10,13,16,19-hexaenoic acid	328.4883	2	1	14	42.0	
+34	Oleic acid	282.4614	2	1	15	34.5	
+82	Lactose	342.2965	11	8	4	28.1	
+68	Indinavir	613.7895	9	4	12	69.8	
+97	Cellobiose	342.2965	11	8	4	28.1	
+98	Glucose	180.1559	6	5	1	14.8	
+86	Cellotetraose	682.5771	22	15	10	55.4	
+40	KAK	345.4377	9	9	13	36.0	
+43	KEK	403.4738	11	10	16	40.3	
+58	KWK	460.5697	10	10	15	50.6	
+18	N-alpha-(2-naphthylsulfonyl)-n-(3-amidino-l-phenylalaninyl)-d-pipecolinic acid	508.5893	9	5	8	53.6	
+19	N-alpha-(2-naphthylsulfonyl)-n(3-amidino-l-phenylalaninyl)isopipecolinic acid methyl ester	522.6159	9	4	9	55.6	
+20	N-alpha-(2-naphthylsulfonyl)-3-amidino-l-phenylalanine piperazide	348.3984	6	0	5	38.9	
+21	N-alpha-(2-naphthylsulfonyl)-n(3-amidino-l-phenylalaninyl)-4-acetyl-piperazine	507.6046	9	4	7	54.8	
+22	[N-[n-(4-methoxy-2,3,6-trimethylphenylsulfonyl)-l-aspartyl]-d-(4-amidino-phenylalanyl)]-piperidine	601.7143	12	6	12	61.9	
+61	Chitobiose	424.4003	13	8	6	37.2	
+38	Clorobiocin	697.1281	13	5	10	69.4	
+34	Oleic acid	282.4614	2	1	15	34.5	
+33	Chitotriose	501.4828	16	14	7	43.9	
+1	Adenosine	267.2413	9	5	2	23.8	
+2	Guanosine	283.2407	10	6	2	24.1	
+71	Nelfinavir mesylate ag1343	663.8881					
+32	5-hydroxymethyl-3,4-dihydroxypiperidine	147.1723	4	4	1	14.2	
+31	1-deoxynojirimycin	163.1717	5	5	1	14.8	
+54	KRK	430.5455	12	13	18	42.7	
+57	KVK	373.4909	9	9	14	39.7	
+4	2-isobutyl-3-methoxypyrazine	166.2203	3	0	3	19.0	
+3	2-isopropyl-3-methoxypyrazine	152.1937	3	0	2	17.2	
+17	1-acetyl-4-(4-{4-[(2-ethoxyphenyl)thio]-3-nitrophenyl}pyridin-2-yl)piperazine	478.5633	8	0	7	52.6	
+101	HABA	242.2301	5	2	3	26.2	
+102	3'-methyl-HABA	256.2567	5	2	3	27.9	
+103	3',5'-dimethyl-HABA	270.2833	5	2	3	29.7	
+88	Biotin	244.3106	5	3	5	23.8	
+85	Tmc114	593.732					
+73	Amprenavir	505.6269	9	4	12	52.7	
+63	D-galactose	180.1559	6	5	1	14.8	
+84	Gluthathione	307.3235	9	6	9	27.8	
+83	S-octylglutathione	419.53612	9	6	17	42.5	
+29	Tetrahydrooxazine	149.1451	5	4	1	13.0	
+48	KKK	402.53212	10	11	17	42.9	
+28	Maltotriose	15.9994	1	2	0	1.5	
+39	Benzamidine	120.1518	2	3	1	14.3	
+26	3'-uridinemonophosphate	324.1813	11	5	4	25.2	
