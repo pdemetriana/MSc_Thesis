@@ -1,0 +1,32 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="buildrow(itc_instrument, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td>${h.link_to(itc_instrument.name, request.route_url('itc_instrument_v', id=itc_instrument.id))}</td>
+        </tr>
+</%def>
+
+<%def name="main()">
+    <h3>Browse ITC instruments</h3>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${ request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse">
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${ request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No pages have yet been created.
+    </p>
+    % endif
+</%def>
+
+

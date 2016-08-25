@@ -1,0 +1,53 @@
+API Documentation
+=================
+
+This page contains some basic documentation for the SCORPIO project.
+
+The :mod:`citation` Module
+--------------------------
+
+.. automodule:: citation
+    :members:
+
+The :mod:`converter` Module
+---------------------------
+
+.. automodule:: converter
+    :members:
+
+The :mod:`itc` Module
+---------------------
+
+.. automodule:: itc
+    :members:
+
+The :mod:`itc_helpers` Module
+-----------------------------
+
+.. automodule:: itc_helpers
+    :members:
+
+The :mod:`ligand` Module
+------------------------
+
+.. automodule:: ligand
+    :members:
+
+The :mod:`protein` Module
+-------------------------
+
+.. automodule:: protein
+    :members:
+
+The :mod:`scorpio2_tables` Module
+---------------------------------
+
+.. automodule:: scorpio2_tables
+    :members:
+
+The :mod:`structure` Module
+---------------------------
+
+.. automodule:: structure
+    :members:
+

@@ -1,0 +1,43 @@
+<%def name="citation()">
+    <fieldset><legend>Citation</legend>
+
+        <label for="title">Title</label><br />
+        ${h.text(name="title", id="title")}<br />
+
+        <label for="volume">Volume</label><br />
+        ${h.text(name="volume", id="volume")}<br />
+
+        <label for="first_page">First page</label><br />
+        ${h.text(name="first_page", id="firstpage")}<br />
+
+        <label for="last_page">Last page</label><br />
+        ${h.text(name="last_page", id="lastpage")}<br />
+
+        <label for="year">Year</label><br />
+        ${h.text(name="year", id="year")}<br />
+
+        <label for="year">PubMed Id</label><br />
+        ${h.text(name="pubmed_id", id="pubmed_id")}<br />
+
+        <label for="journal">Journal</label><br />
+        ${h.select("journal.journal_id", None, c.journal_options, prompt="Please choose one...")}<br />
+
+    </fieldset><br />
+        % for id in range(c.number_of_authors):
+            ${author(id=id)}
+        % endfor
+</%def>
+
+<%def name="author(id)">
+    <fieldset><legend>Author</legend>
+        ${h.select("author-%s.author_id"%(id), None, c.author_options, prompt="Please choose one...")}
+        <br />
+        ${h.submit(name="action", value="Remove %s"%(id))}
+
+    </fieldset><br />
+</%def>
+
+${h.hidden(name="id")}
+${citation()}
+${h.submit(name="action", value="Save")}
+${h.submit(name="action", value="Add another author")}

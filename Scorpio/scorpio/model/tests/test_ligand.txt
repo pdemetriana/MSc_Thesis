@@ -1,0 +1,18 @@
+>>> from scorpio.model.ligand import *
+>>> lig1 = Ligand('Pyridine', 'c1ncccc1')
+>>> lig2 = Ligand('Also pyridine', 'c1cccnc1')
+>>> lig3 = Ligand('Pyrrol', 'c1nccc1')
+>>> lig1 == lig2
+True
+>>> lig1 != lig2
+False
+>>> lig1 == lig3
+False
+>>> lig1 != lig3
+True
+>>> 'molwt %.2f' % lig1.molecule.molwt
+'molwt 79.10'
+>>> lig1
+<Ligand('c1cccnc1')>
+>>> lig1.smiles
+'c1cccnc1'

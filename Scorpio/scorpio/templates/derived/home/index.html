@@ -1,0 +1,40 @@
+<%inherit file="/derived/home.html"/>
+
+<%def name="main()">
+        <h2>Welcome to SCORPIO!</h2>
+        <p>
+        Protein-ligand interactions are involved in virtually all biological processes, including substrates binding to enzymes, antigens binding to antibodies and antagonists binding to receptors. Understanding protein-ligand interactions is therefore fundamental to the life sciences.
+        </p>
+
+        <p>
+        The aim of this database is to provide access to complete sets of thermodynamic data for protein-ligand complexes that have had their structures resolved. Hopefully this will be useful to anyone trying to relate structure to thermodynamics.
+        </p>
+
+
+        <p>
+        SCORPIO provides all the thermodynamic parameters of binding. Gibb's free energy (&Delta;G), the enthalpy (&Delta;H) of binding and the entropy (&Delta;S) of binding, and when available the heat capacity (&Delta;Cp) of binding. This is achieved by only including thermodynamic data derived from isothermal titration calorimetry (ITC).
+        </p>
+
+        <p>
+        ITC provides a direct route to the complete thermodynamic characterisation of bimolecular interactions. The change in enthalpy and the equilibrium binding constant (K<sub>B</sub>) can be determined in one experiment by direct measurement of the heat of interaction as one component is titrated into the other. The other thermodynamic parameters for the interaction are implicit from the relationship:
+        </p>
+
+        <p>
+        -R.T.lnK<sub>B</sub> = &Delta;G = &Delta;H - T&Delta;S
+        </p>
+
+        <p>
+        Furthermore ITC does not rely on the van't Hoff equation to determine the &Delta;H: therefore it is the technique which provides the highest quality thermodynamic data.
+        </p>
+
+        <a href="/home/data_overview#dh_vs_ds"><img src=${request.static_url('scorpio:static/figures/dh_vs_ds.png')} alt='DH vs TDS plot'/></a>
+
+
+        <p>
+        We hope that SCORPIO will be useful to anyone trying to relate structural and thermodynamic parameters.
+        </p>
+
+        <p>
+        Enjoy!
+        </p>
+</%def>

@@ -1,0 +1,16 @@
+<%inherit file="/derived/structure.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new structure</h3>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('structure', action='create'), table_class='form')}
+    ${request.tmpl_context.form.field(label='Protein', type='dropdown', name='protein_id', required=True)}
+    ${request.tmpl_context.form.field(label='Ligand', type='dropdown', name='ligand_id', required=True)}
+    ${request.tmpl_context.form.field(label='PDB code', type='text', name='pdb_code', required=True)}
+    ${request.tmpl_context.form.field(label='Method', type='dropdown', name='method', required=True)}
+    ${request.tmpl_context.form.field(label='Resolution', type='text', name='resolution', required=Flase)}
+    ${request.tmpl_context.form.field(label='R-factor', type='text', name='r_factor', required=Flase)}
+    ${request.tmpl_context.form.field(label='Citation', type='dropdown', name='citation_id', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Create structure'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>

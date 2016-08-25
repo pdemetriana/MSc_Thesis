@@ -1,0 +1,49 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="main()">
+    <h3>ITC &Delta;C<sub>p</sub></h3>
+    <table class="view">
+        <tr>
+            <th class="top" colspan=4>ITC &Delta;C<sub>p</sub></th>
+        </tr>
+        <tr>
+            <th>Protein</th>
+            <td colspan=3>${self.safeproteinlink(request.tmpl_context.record)}</td>
+        </tr>
+        <tr>
+            <th>Ligand</th>
+            <td colspan=3>${self.safeligandlink(request.tmpl_context.record)}</td>
+        </tr>
+        <tr>
+            <th>Buffer</th>
+            %if request.tmpl_context.record.buffer:
+                <td colspan=3>${h.link_to(request.tmpl_context.record.buffer.description, request.route_url("itc_buffer_v", id=request.tmpl_context.record.buffer.id))}</td>
+            %else:
+                <td colspan=3></td>
+            %endif
+        </tr>
+        <tr>
+            <th>pH</th>
+            <td colspan=3>${request.tmpl_context.record.ph}</td>
+        </tr>
+        <tr>
+            <th>&Delta;C<sub>p</sub></th>
+            <td>${self.saferound(request.tmpl_context.record.delta_cp, 2)}</td>
+            <td>&plusmn;${self.saferound(request.tmpl_context.record.delta_cp_exp_err, 2)}</td>
+            <td>${request.tmpl_context.record.delta_cp_unit}</td>
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td colspan=3>${h.link_to("ITC data", request.route_url('itc_delta_cp_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Reference</th>
+            %if request.tmpl_context.record.citation:
+                <td colspan=3>${h.link_to(str(request.tmpl_context.record.citation), request.route_url("citation_v", id=request.tmpl_context.record.citation.id))}</td>
+            %else:
+                <td colspan=3></td>
+            %endif
+        </tr>
+    </table>
+</%def>
+

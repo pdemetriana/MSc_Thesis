@@ -1,0 +1,20 @@
+<%inherit file="/derived/citation.html"/>
+
+<%def name="main()">
+    <h3>Journal</h3>
+    <table class="view">
+        <tr>
+            <th>Name</th>
+            <td>${request.tmpl_context.record.name}
+        </tr>
+        <tr>
+            <th>Abbreviation</th>
+            <td>${request.tmpl_context.record.abbreviation}</td>
+        </tr>
+        <tr>
+            <th>Citation data</th>
+            <td>${h.link_to("Citation data", request.route_url('journal_citation', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+

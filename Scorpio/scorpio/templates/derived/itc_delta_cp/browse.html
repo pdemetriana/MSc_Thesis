@@ -1,0 +1,38 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="buildrow(itc_delta_cp, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td><a href="/itc_delta_cp/id/${itc_delta_cp.id}">Link</a></td>
+        <td>${self.safeproteinlink(itc_delta_cp)}</td>
+        <td>${self.safeligandlink(itc_delta_cp)}</td>
+        <td>${self.saferoundlink(itc_delta_cp.delta_cp, request.route_url('itc_delta_cp_v', id=itc_delta_cp.id), 2)}</td>
+        <td>&plusmn;${self.saferoundlink(itc_delta_cp.delta_cp_exp_err, request.route_url('itc_delta_cp_v', id=itc_delta_cp.id), 2)}</td>
+        <td>${itc_delta_cp.delta_cp_unit}</td>
+        </tr>
+</%def>
+
+<%def name="main()">
+    <h3>Browse ITC &Delta;C<sub>p</sub></h3>
+    <th>For a full dataset and details of experiment click on the datum link or any thermodynamic datum in the table below.</th>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${ request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse">
+    <tr><th>Datum</th><th>Protein</th><th>Ligand</th><th>&Delta;C<sub>p</sub></th><th>Error</th><th>Unit</th></tr>
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${ request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No pages have yet been created.
+    </p>
+    % endif
+</%def>
+

@@ -1,0 +1,33 @@
+<%inherit file="/derived/citation.html"/>
+
+<%def name="buildrow(journal, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td>${h.link_to(journal.abbreviation, request.route_url('journal_v', id=journal.id))}</td>
+        <td>${h.link_to(journal.name, request.route_url('journal_v', id=journal.id))}</td>
+        </tr>
+</%def>
+
+<%def name="main()">
+    <h3>Browse journals</h3>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${ request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse">
+    <tr><th>Abbreviation</th><th>Name</th></tr>
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${ request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No pages have yet been created.
+    </p>
+    % endif
+</%def>
+

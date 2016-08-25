@@ -1,0 +1,21 @@
+<%inherit file="/derived/citation.html"/>
+
+<%def name="main()">
+    <h3>Author</h3>
+    <table class="view">
+        <tr>
+            <th>First name</th>
+            <td>${request.tmpl_context.record.first_name}
+        </tr>
+        <tr>
+            <th>Last name</th>
+            <td>${request.tmpl_context.record.last_name}</td>
+        </tr>
+        <tr>
+            <th>Citation data</th>
+            <td>${h.link_to("Citation data", request.route_url('author_citation', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+
+

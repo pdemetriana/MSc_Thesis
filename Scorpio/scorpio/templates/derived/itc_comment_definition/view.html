@@ -1,0 +1,16 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="main()">
+    <h3>ITC comment definition</h3>
+    <table class="view">
+        <tr>
+            <th>ITC comment definition</th>
+            <td>${request.tmpl_context.record.definition}</th>
+        </tr>
+        <tr>
+            <th>Comments</th>
+            <td>${h.link_to("Comments", request.route_url('itc_comment_definition_comment', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+

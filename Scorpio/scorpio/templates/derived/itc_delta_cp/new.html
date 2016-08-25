@@ -1,0 +1,27 @@
+<%inherit file="/derived/itc.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create new ITC &Delta;C<sub>p</sub> datum</h3>
+    ${c.form.start_with_layout(h.url(controller='itc_delta_cp', action='create'), table_class='form')}
+    ${c.form.field(label='Protein', type='dropdown', name='protein_id', required=True)}
+    ${c.form.field(label='Ligand', type='dropdown', name='ligand_id', required=True)}
+    ${c.form.field(label='Buffer', type='dropdown', name='buffer_id', required=True)}
+    ${c.form.field(label='pH', type='text', name='ph', required=False)}
+    ${c.form.field(label='Citation', type='dropdown', name='citation_id', required=True)}
+    <tr class="field"> 
+      <td class="label" valign="top" height="10"> 
+        <span class="required">*</span><label for="delta_cp">ΔCp:</label> 
+      </td> 
+      <td class="field" valign="top"> 
+    ${c.form.text('delta_cp')}
+    ±
+    ${c.form.text('delta_cp_exp_err')}
+    ${c.form.dropdown('delta_cp_unit')}
+      </td> 
+      <td rowspan="2" valign="top"></td> 
+    </tr> 
+    ${c.form.action_bar(c.form.submit(name='submit', value=u'Create ΔCp ITC datum'))}
+    ${c.form.end_with_layout(hidden_field_names=['id'])}
+</%def>
+

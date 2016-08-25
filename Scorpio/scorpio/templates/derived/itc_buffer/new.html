@@ -1,0 +1,11 @@
+<%inherit file="/derived/itc.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new ITC buffer</h3>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('itc_buffer', action='create'), table_class='form')}
+    ${request.tmpl_context.form.field(label='Description', type='textarea', name='description', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Create ITC buffer'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>
+

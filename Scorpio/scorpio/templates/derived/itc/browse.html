@@ -1,0 +1,42 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="buildrow(itc, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td><a href="/itc/id/${itc.id}">Link</a></td>
+        <td>${self.safeproteinlink(itc)}</td>
+        <td><a href="/ligand/id/${itc.ligand.id}">${itc.ligand.name}</a></td>
+        <td>${self.saferoundlink(itc.delta_g, request.route_url('itc_v', id=itc.id), 2)}</td>
+        <td>${self.saferoundlink(itc.delta_h, request.route_url('itc_v', id=itc.id), 2)}</td>
+        <td>${self.saferoundlink(itc.delta_s, request.route_url('itc_v', id=itc.id), 2)}</td>
+        <td>${self.saferoundlink(itc.affinity, request.route_url('itc_v', id=itc.id), 2)}</td>
+        %if itc._itc_delta_cp:
+            <td>${self.saferoundlink(itc.delta_cp, request.route_url("itc_delta_cp_v", id=itc._itc_delta_cp.id), 2)}</td>
+        %else:
+            <td></td>
+        %endif
+        </tr>
+</%def>
+
+<%def name="main()">
+    <h3>Browse ITC data</h3>
+    <th>For a full dataset and details of experiment click on the datum link or any thermodynamic datum in the table below.</th>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse"><tr><th>Datum</th><th>Protein</th><th>Ligand</th><th>&Delta;G (kJ/mol)</th><th>&Delta;H (kJ/mol)</th><th>T&Delta;S (kJ/mol)</th><th>K<sub>D</sub> (&micro;M)</th><th>&Delta;C<sub>p</sub> (J/mol)</th></tr>
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No ITC data available.
+    </p>
+    % endif
+</%def>

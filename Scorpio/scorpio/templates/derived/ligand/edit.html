@@ -1,0 +1,11 @@
+<%inherit file="/derived/ligand.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Edit ligand</h3>
+    ${h.form(request.route_url('ligand', action='process_ligand', id=c.id))}
+    ${fields.body()}
+    ${h.end_form()}
+</%def>
+
+

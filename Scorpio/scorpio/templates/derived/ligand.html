@@ -1,0 +1,18 @@
+<%inherit file="/base/index.html"/>
+
+<%def name="bartitle()">
+    <h2>Ligand</h2>
+</%def>
+
+<%def name="submenu()">
+    <h2>Ligand</h2>
+    <h3>Browse</h3>
+    <ul>
+        <li><a href="${request.route_url('ligand_br', page='1')}">Ligands</a></li>
+        <li><a href="${request.route_url('ligand_features_br', page='1')}">Ligands Features</a></li>
+        <li><a href="${request.route_url('ligand_classification_br', page='1')}">Classifications</a></li>
+        <li><a href="${request.route_url('ligand_hetnam_br', page='1')}">HETNAMs</a></li>
+    </ul>
+</%def>
+
+

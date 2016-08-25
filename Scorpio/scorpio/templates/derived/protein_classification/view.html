@@ -1,0 +1,18 @@
+<%inherit file="/derived/protein.html"/>
+
+<%def name="main()">
+    <h3>Protein classification</h3>
+    <table class="view">
+        <tr>
+            <th class="top" colspan=2>Protein classification</th>
+        </tr>
+        <tr>
+            <th>Protein classification</th>
+            <td>${request.tmpl_context.record.classification}</th>
+        </tr>
+        <tr>
+            <th>Protein data</th>
+            <td>${h.link_to("Protein data", request.route_url('protein_classification_protein', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>

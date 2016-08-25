@@ -1,0 +1,16 @@
+<%inherit file="/base/index.html"/>
+
+<%def name="bartitle()">
+    <h2>Home</h2>
+</%def>
+
+<%def name="submenu()">
+    <h2>Home</h2>
+    <h3>Links</h3>
+    <ul>
+        <li><a href="${request.route_url('index')}">Home</a></li>
+        <li><a href="${request.route_url('home', action='data_overview')}">Data overview</a></li>
+        <li><a href="${request.route_url('home', action='acknowledgements')}">Acknowledgements</a></li>
+        <li><a href="${request.route_url('home', action='contact')}">Contact</a></li>
+    </ul>
+</%def>

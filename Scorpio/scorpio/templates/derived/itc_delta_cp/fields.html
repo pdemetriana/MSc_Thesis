@@ -1,0 +1,26 @@
+<%def name="delta_cp()">
+    <fieldset><legend>Delta Cp</legend>
+
+        <label for="protein">Protein</label><br />
+        ${h.select("protein_id", None, c.protein_options, prompt="Please choose one...")}<br />
+
+        <label for="ligand">Ligand</label><br />
+        ${h.select("ligand_id", None, c.ligand_options, prompt="Please choose one...")}<br />
+
+        <label for="buffer">Buffer</label><br />
+        ${h.select("buffer_id", None, c.buffer_options, prompt="Please choose one...")}<br />
+
+        <label for="ph">pH</label><br />
+        ${h.text(name="ph", id="ph")}<br />
+
+        <label for="delta_cp">Delta Cp</label><br />
+        ${h.text(name="delta_cp", id="delta_cp")}
+        ±
+        ${h.text(name="delta_cp_exp_err", id="delta_cp_exp_err")}
+        ${h.select("delta_cp_unit", None, c.unit_options)}<br />
+
+        <label for="citation">Citation</label><br />
+        ${h.select("citation_id", None, c.citation_options, prompt="Please choose one...")}<br />
+</%def>
+${h.hidden(name="id")}
+${delta_cp()}

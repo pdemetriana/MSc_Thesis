@@ -1,0 +1,35 @@
+<%def name="ligand()">
+    <fieldset><legend>Ligand</legend>
+
+        <label for="name">Name</label><br />
+        ${h.text(name="name", id="name")}<br />
+
+        <label for="classification">Classification</label><br />
+        ${h.select("classification.classification_id", None, request.tmpl_context.ligand_classification_options, prompt="Please choose one...")}<br />
+
+        <label for="smiles">SMILES</label><br />
+        ${h.text(name="smiles", id="smiles", size=80)}<br />
+
+
+    </fieldset><br />
+        % for id in range(request.tmpl_context.number_of_hetnams):
+            <% last_record = id+1==request.tmpl_context.number_of_hetnams %>
+            ${hetnam(id=id, last=last_record)}
+        % endfor
+</%def>
+
+<%def name="hetnam(id, last)">
+    <fieldset><legend>HETNAM</legend>
+        ${h.select("hetnam-%s.hetnam_id"%(id), None, request.tmpl_context.ligand_hetnam_options, prompt="Please choose one...")}
+        % if last:
+            <br />
+            ${h.submit(name="action", value="Remove %s"%(id))}
+        % endif
+
+    </fieldset><br />
+</%def>
+
+${h.hidden(name="id")}
+${ligand()}
+${h.submit(name="action", value="Save")}
+${h.submit(name="action", value="Add another HETNAM")}

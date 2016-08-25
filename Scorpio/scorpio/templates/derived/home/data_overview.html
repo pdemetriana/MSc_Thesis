@@ -1,0 +1,40 @@
+<%inherit file="/derived/home.html"/>
+
+<%def name="main()">
+    <h3>SCORPIO data overview</h3>
+    <ul>
+        <li><a href="#dh_vs_ds">&Delta;H vs T&Delta;S plot</a></li>
+        <li><a href="#dg_dist">&Delta;G distribution plot</a></li>
+        <li><a href="#dh_dist">&Delta;H distribution plot</a></li>
+        <li><a href="#tds_dist">T&Delta;S distribution plot</a></li>
+    </ul>
+    <a name="dh_vs_ds"><h3>&Delta;H vs T&Delta;S plot</h3></a>
+    <p><img src=${request.static_url('scorpio:static/figures/dh_vs_ds.png')} alt='DH vs TDS plot' />
+    </br>
+    Overall distribution of the data stored in SCORPIO.
+    </p>
+    </br>
+
+    <a name="dg_dist"><h3>&Delta;G distribution plot</h3></a>
+    <p><img src=${request.static_url('scorpio:static/figures/dg_dist.png')} alt='DG distribution plot' />
+    </br>
+    Distribution of &Delta;G values at 25&deg;.
+    </p>
+    </br>
+
+    <a name="dh_dist"><h3>&Delta;H distribution plot</h3></a>
+    <p>
+    <img src=${request.static_url('scorpio:static/figures/dh_dist.png')} alt='DH distribution plot' />
+    </br>
+    Distribution of &Delta;H values at 25&deg;.
+    </p>
+    </br>
+
+    <a name="tds_dist"><h3>T&Delta;S distribution plot</h3></a>
+    <p><img src=${request.static_url('scorpio:static/figures/tds_dist.png')} alt='TDS distribution plot' />
+    </br>Distribution of T&Delta;S values at 25&deg;.
+    </p>
+    </br>
+</%def>
+
+

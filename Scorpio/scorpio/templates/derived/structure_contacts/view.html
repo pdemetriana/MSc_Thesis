@@ -1,0 +1,52 @@
+<%inherit file="/derived/structure.html"/>
+
+<%def name="main()">
+    <h3>Structure</h3>
+    <table class="view">
+        <tr>
+            <th class="top" colspan=4>Structure</th>
+        </tr>
+
+        <tr>
+            <th>Protein name</th>
+            <td colspan=3>${h.link_to(request.tmpl_context.record.structure.protein.name, request.route_url('protein_v', id=request.tmpl_context.record.structure.protein.id))}</td>
+        </tr>
+        <tr>
+            <th>Ligand name</th>
+            <td colspan=3>${h.link_to(request.tmpl_context.record.structure.ligand.name, request.route_url('ligand_v', id=request.tmpl_context.record.structure.ligand.id))}</td>
+        </tr>
+        <tr>
+        <th>PDB Code</th>
+            <td colspan=3>${h.link_to(request.tmpl_context.record.pdb_code, 'http://www.pdb.org/pdb/explore/explore.do?structureId=%s' % request.tmpl_context.record.pdb_code)}</td>
+        </tr>
+
+        <tr>
+            <th class="top" colspan=4>Contact Changes upon Binding</th>
+        </tr>
+        <tr>
+            <th>Polar Contacts</th>
+            <td>${request.tmpl_context.record.polar_cont_changes}</td>
+            <th>Apolar Contacts</th>
+            <td>${request.tmpl_context.record.apolar_cont_changes}</td>
+        </tr>
+
+        <tr>
+            <th class="top" colspan=4>Water Counts on Binding Site</th>
+        </tr>
+        <tr>
+            <th>Surface Waters</th>
+            <td colspan=3>${request.tmpl_context.record.surface_waters}</td>
+        </tr>
+        <tr>
+            <th>Cleft Waters</th>
+            <td colspan=3>${request.tmpl_context.record.cleft_waters}</td>
+        </tr>
+        <tr>
+            <th>Buried Waters</th>
+            <td colspan=3>${request.tmpl_context.record.buried_waters}</td>
+        </tr>
+    </table>
+    
+    <th>*Contacts and water counts have been calculated using ProACt. The values are the average of counts from 10 ProACt runs.</th>
+</%def>
+

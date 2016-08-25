@@ -1,0 +1,12 @@
+<%inherit file="/derived/itc.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new ITC comment definition</h3>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('itc_comment_definition', action='create'),
+                               table_class='form')}
+    ${request.tmpl_context.form.field(label='ITC comment definition', type='text', name='definition', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Create ITC comment definition'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>
+

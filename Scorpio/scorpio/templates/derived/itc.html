@@ -1,0 +1,20 @@
+<%inherit file="/base/index.html"/>
+
+<%def name="bartitle()">
+    <h2>ITC</h2>
+</%def>
+
+<%def name="submenu()">
+    <h2>ITC</h2>
+    <h3>Browse</h3>
+    <ul>
+    <li><a href="${request.route_url('itc_br', page='1')}">ITC data</a></li>
+    <li><a href="${request.route_url('itc_instrument_br', page='1')}">Instruments</a></li>
+    <li><a href="${request.route_url('itc_interaction_type_br', page='1')}">Interaction types</a></li>
+    <li><a href="${request.route_url('itc_buffer_br', page='1')}">Buffers</a></li>
+    <li><a href="${request.route_url('itc_comment_br', page='1')}">Comments</a></li>
+    <li><a href="${request.route_url('itc_comment_definition_br', page='1')}">Comment definitions</a></li>
+    <li><a href="${request.route_url('itc_delta_cp_br', page='1')}">&Delta;C<sub>p</sub></a></li>
+    </ul>
+</%def>
+

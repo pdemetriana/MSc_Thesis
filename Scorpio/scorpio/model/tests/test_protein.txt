@@ -1,0 +1,27 @@
+>>> from scorpio.model.protein import *
+>>> prot1 = Protein('Insulin',
+...                 'MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTP\
+...                  KTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQ\
+...                  LENYCN')
+>>> prot2 = Protein('Insulin clone white whitespace',
+...                 'MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTP\
+...                  KTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQ\
+...                  L    ENYCN')
+>>> prot3 = Protein('Insulin Met1A',
+...                 'AALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTP\
+...                  KTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQ\
+...                  LENYCN')
+>>> prot1
+<Protein('Insulin')>
+>>> prot1.name
+'Insulin'
+>>> prot1.aa_seq
+'MALWMRLLPLLALLALWGPDPAAAFVNQHLCGSHLVEALYLVCGERGFFYTPKTRREAEDLQVGQVELGGGPGAGSLQPLALEGSLQKRGIVEQCCTSICSLYQLENYCN'
+>>> prot1 == prot2
+True
+>>> prot1 != prot2
+False
+>>> prot1 == prot3
+False
+>>> prot1 != prot3
+True

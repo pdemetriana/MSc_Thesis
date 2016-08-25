@@ -1,0 +1,18 @@
+<%inherit file="/base/index.html"/>
+
+<%def name="bartitle()">
+    <h2>Protein</h2>
+</%def>
+
+<%def name="submenu()">
+    <h2>Protein</h2>
+    <h3>Browse</h3>
+    <ul>
+    <li><a href="${request.route_url('protein_root_name_br', page='1')}">Proteins</a></li>
+    <li><a href="${request.route_url('protein_br', page='1')}">Variants</a></li>
+    <li><a href="${request.route_url('protein_classification_br', page='1')}">Classifications</a></li>
+    <li><a href="${request.route_url('protein_source_br', page='1')}">Sources</a></li>
+    <li><a href="${request.route_url('protein_ec_number_br', page='1')}">EC numbers</a></li>
+    </ul>
+</%def>
+

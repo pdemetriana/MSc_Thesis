@@ -1,0 +1,51 @@
+<%inherit file="/derived/citation.html"/>
+
+<%def name="main()">
+    <h3>Citation</h3>
+    <table class="view">
+        <tr>
+            <th>Title</th>
+            <td>${request.tmpl_context.record.title}
+        </tr>
+        <tr>
+            <th>Journal</th>
+            <td>${h.link_to(request.tmpl_context.record.journal.name, request.route_url('journal_v', id=request.tmpl_context.record.journal.id))}</td>
+        </tr>
+        <tr>
+            <th>Author(s)</th>
+            <td>
+            % for author in request.tmpl_context.record.authors:
+                ${h.link_to(author.full_name, request.route_url('author_v', id=author.id))}
+            % endfor
+            </td>
+
+        </tr>
+        <tr>
+            <th>Year</th>
+            <td>${request.tmpl_context.record.year}</td>
+        </tr>
+        <tr>
+            <th>Volume</th>
+
+            <td>${request.tmpl_context.record.volume}</td>
+        </tr>
+        <tr>
+            <th>Pages</th>
+            <td>${request.tmpl_context.record.first_page}-${request.tmpl_context.record.last_page}</td>
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td>${h.link_to("ITC data", request.route_url('citation_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Structure data</th>
+            <td>${h.link_to("Structure data", request.route_url('citation_structure', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>PubMed Id</th>
+            <td>${h.link_to(request.tmpl_context.record.pubmed_id, 'http://www.ncbi.nlm.nih.gov/pubmed/%s?dopt=Abstract' % request.tmpl_context.record.pubmed_id)}</td>
+        </tr>
+
+    </table>
+</%def>
+

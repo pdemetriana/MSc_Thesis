@@ -1,0 +1,13 @@
+<%inherit file="/derived/itc.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Edit ITC instrument</h3>
+    ${c.form.start_with_layout(h.url(controller='itc_instrument', action='save',
+                                     id=request.urlvars['id']),
+                               table_class='form')}
+    ${c.form.field(label='Name', type='text', name='name', required=True)}
+    ${c.form.action_bar(c.form.submit(name='submit', value='Save changes'))}
+    ${c.form.end_with_layout(hidden_field_names=['id'])}
+</%def>
+

@@ -1,0 +1,89 @@
+${h.hidden(name="id")}
+
+<%def name="itc()">
+    <fieldset><legend>ITC</legend>
+
+        <label for="protein">*Protein</label><br />
+        ${h.select("protein_id", None, request.tmpl_context.protein_options, prompt="Please choose one...")}<br />
+
+        <label for="ligand">*Ligand</label><br />
+        ${h.select("ligand_id", None, request.tmpl_context.ligand_options, prompt="Please choose one...")}<br />
+
+        <label for="interaction_type">*Interaction type</label><br />
+        ${h.select("interaction_type_id", None, request.tmpl_context.interaction_type_options, prompt="Please choose one...")}<br />
+
+        <label for="stoichiometric_parameter">Stoichiometric parameter</label><br />
+        ${h.text(name="stoichiometric_parameter", id="stoichiometric_parameter")}
+        ±
+        ${h.text(name="stoichiometric_parameter_exp_err", id="stoichiometric_parameter_exp_err")}<br />
+
+        <label for="delta_g">Delta G</label><br />
+        ${h.text(name="delta_g", id="delta_g")}
+        ±
+        ${h.text(name="delta_g_exp_err", id="delta_g_exp_err")}
+        ${h.select("delta_g_unit", None, request.tmpl_context.dg_unit_options)}<br />
+
+        <label for="delta_h">Delta H</label><br />
+        ${h.text(name="delta_h", id="delta_h")}
+        ±
+        ${h.text(name="delta_h_exp_err", id="delta_h_exp_err")}
+        ${h.select("delta_h_unit", None, request.tmpl_context.dh_unit_options)}<br />
+
+        <label for="delta_s">Delta S</label><br />
+        ${h.text(name="delta_s", id="delta_s")}
+        ±
+        ${h.text(name="delta_s_exp_err", id="delta_s_exp_err")}
+        ${h.select("delta_s_unit", None, request.tmpl_context.ds_unit_options)}<br />
+
+        <label for="affinity">Affinity</label><br />
+        ${h.text(name="affinity", id="affinity")}
+        ±
+        ${h.text(name="affinity_exp_err", id="affinity_exp_err")}
+        ${h.select("affinity_unit", None, request.tmpl_context.affinity_unit_options)}<br />
+
+        <label for="delta_cp">Delta Cp</label><br />
+        ${h.select("delta_cp_id", None, request.tmpl_context.delta_cp_options, prompt="None")}<br />
+
+        <label for="instrument">*Instrument</label><br />
+        ${h.select("instrument_id", None, request.tmpl_context.instrument_options, prompt="Please choose one...")}<br />
+
+        <label for="buffer">*Buffer</label><br />
+        ${h.select("buffer_id", None, request.tmpl_context.buffer_options, prompt="Please choose one...")}<br />
+
+        <label for="temperature">Temperature</label><br />
+        ${h.text(name="temperature", id="temperature")}
+        ${h.select("temperature_unit", None, [['C', 'C'], ['K', 'K']])}<br />
+
+        <label for="ph">pH</label><br />
+        ${h.text(name="ph", id="ph")}<br />
+
+        <label for="protonation_state_examined">Protonation state examined</label><br />
+        ${h.select("protonation_state_examined", None, [['No', 'No'], ['Yes', 'Yes']])}<br />
+
+        <label for="cell_content">Cell content</label><br />
+        ${h.select("cell_content", None, [['Protein', 'Protein'], ['Ligand', 'Ligand']])}<br />
+
+        <label for="citation">*Citation</label><br />
+        ${h.select("citation_id", None, request.tmpl_context.citation_options, prompt="Please choose one...")}<br />
+
+    </fieldset><br />
+
+        % for id in range(request.tmpl_context.number_of_comments):
+            ${comment(id=id)}
+        % endfor
+</%def>
+
+<%def name="comment(id)">
+    <fieldset><legend>Comment</legend>
+        ${h.select("comment-%s.comment_id"%(id), None, request.tmpl_context.comment_options, prompt="Please choose one...")}
+        <br />
+        ${h.submit(name="action", value="Remove %s"%(id))}
+
+    </fieldset><br />
+</%def>
+
+${h.hidden(name="id")}
+${itc()}
+${h.submit(name="action", value="Check")}
+${h.submit(name="action", value="Save")}
+${h.submit(name="action", value="Add another comment")}

@@ -1,0 +1,44 @@
+<%inherit file="/derived/ligand.html"/>
+
+<%def name="main()">
+    <h3>Ligand</h3>
+    <table class="view">
+        <tr>
+            <td rowspan="7" class="ligand_diagram"><img src=${request.static_path("scorpio:static/ligand_diagrams/" +str(request.tmpl_context.record.id) +".png")} alt="${request.tmpl_context.record.name} diagram" />
+            </td>
+            <th>Name</th>
+            <td>${request.tmpl_context.record.name}</td>
+        </tr>
+        <tr>
+            <th>Class</th>
+            <td>${h.link_to(request.tmpl_context.record.classification.classification, request.route_url('ligand_classification_v', id=request.tmpl_context.record.classification.id))}</td>
+        </tr>
+        <tr>
+            <th>SMILES</th>
+            <td>${' '.join(h.wrap(request.tmpl_context.record.smiles, 60))}</td>
+        </tr>
+        <tr>
+
+            <th>PDB HETNAM(S)</th>
+            <td>
+            % for hetnam in request.tmpl_context.record.hetnams:
+                ${h.link_to(hetnam.hetnam, request.route_url('ligand_hetnam_v', id=hetnam.id))}
+            % endfor
+            </td>
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td>${h.link_to("ITC data", request.route_url('ligand_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Structure data</th>
+            <td>${h.link_to("Structure data", request.route_url('ligand_structure', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Ligand Features</th>
+            <td>${h.link_to("Ligand Features", request.route_url('ligand_features_v', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+
+

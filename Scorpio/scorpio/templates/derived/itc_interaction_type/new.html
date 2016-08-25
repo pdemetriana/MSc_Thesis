@@ -1,0 +1,11 @@
+<%inherit file="/derived/itc.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new ITC interaction type</h3>
+    ${c.form.start_with_layout(h.url(controller='itc_interaction_type', action='create')
+                               , table_class='form')}
+    ${c.form.field(label='ITC interaction type', type='text', name='interaction_type', required=True)}
+    ${c.form.action_bar(c.form.submit(name='submit', value='Create ITC interaction type'))}
+    ${c.form.end_with_layout(hidden_field_names=['id'])}
+</%def>

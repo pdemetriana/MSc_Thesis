@@ -1,0 +1,16 @@
+<%inherit file="/derived/ligand.html"/>
+
+<%def name="main()">
+    <h3>Ligand classification</h3>
+    <table class="view">
+        <tr>
+            <th>Ligand classification</th>
+            <td>${request.tmpl_context.record.classification}</th>
+        </tr>
+        <tr>
+            <th>Ligand data</th>
+            <td>${h.link_to("Ligand data", request.route_url('ligand_classification_ligand', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+

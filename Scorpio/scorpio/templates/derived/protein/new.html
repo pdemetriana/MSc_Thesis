@@ -1,0 +1,15 @@
+<%inherit file="/derived/protein.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create new</h3>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('protein', action='create'), table_class='form')}
+    ${request.tmpl_context.form.field(label='Name', type='text', name='name', required=True)}
+    ${request.tmpl_context.form.field(label='Amino acid sequence', type='textarea', name='aa_seq', required=True)}
+    ${request.tmpl_context.form.field(label='Root name', type='dropdown', name='root_name_id', required=True)}
+    ${request.tmpl_context.form.field(label='Source', type='dropdown', name='source_id', required=True)}
+    ${request.tmpl_context.form.field(label='Classification', type='dropdown', name='classification_id', required=True)}
+    ${request.tmpl_context.form.field(label='E.request.tmpl_context. number', type='dropdown', name='ec_number_id', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Create protein'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>

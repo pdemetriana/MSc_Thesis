@@ -1,0 +1,11 @@
+<%inherit file="/derived/protein.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Edit protein source</h3>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('protein_source', action='save',
+                                     id=request.urlvars['id']), table_class='form')}
+    ${request.tmpl_context.form.field(label='Protein source', type='text', name='source', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Save changes'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>

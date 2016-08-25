@@ -1,0 +1,31 @@
+${h.hidden(name="id")}
+${h.field(
+    "Protein name",
+    h.text(name="name"),
+    required=True,
+)}
+${h.field(
+    "Amino acid sequence",
+    h.textarea(name="aa_seq", rows=7, cols=80),
+    required=True,
+)}
+${h.field(
+    "Protein root name (family)",
+    h.select("root_name_id", None, request.tmpl_context.root_name_options, prompt="Please choose one..." ),
+    required=True,
+)}
+${h.field(
+    "Protein source (organism)",
+    h.select("source_id", None, request.tmpl_context.source_options, prompt="Please choose one..."),
+    required=True,
+)
+}
+${h.field(
+    "Protein classification",
+    h.select("classification_id", None, request.tmpl_context.classification_options, prompt="Please choose one..."),
+    required=True,
+)}
+${h.field(
+    "Protein enzyme classification number",
+    h.select("ec_number_id", None, request.tmpl_context.ec_number_options, prompt="Not an enzyme"),
+)}

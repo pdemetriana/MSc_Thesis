@@ -1,0 +1,15 @@
+<%inherit file="/derived/ligand.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new ligand</h3>
+    <p>
+    There are many ways of obtaining ligand SMILES. One way is the use the ${h.link_to('PubChem sketcher', 'http://pubchem.ncbi.nlm.nih.gov/edit2/index.html')}. There are ${h.link_to('help pages', 'http://pubchem.ncbi.nlm.nih.gov/sketch/sketchhelp.html')} on how to use the PubChem sketcher as well as a ${h.link_to('publication', 'http://ukpmc.ac.uk/articles/PMC2820498?accid=PMC2820498&tool=pmcentrez')}.
+    </p>
+
+    ${h.form(request.route_url('ligand', action='process_ligand'))}
+    ${fields.body()}
+    ${h.end_form()}
+</%def>
+
+

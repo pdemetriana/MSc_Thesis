@@ -1,0 +1,31 @@
+<%inherit file="/derived/protein.html"/>
+
+<%def name="buildrow(protein_root_name, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td>${h.link_to(protein_root_name.root_name, request.route_url('protein_root_name_v', id=protein_root_name.id))}</td>
+        </tr>
+</%def>
+
+<%def name="main()">
+    <h3>Browse proteins</h3>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse">
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${ request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No pages have yet been created.
+    </p>
+    % endif
+</%def>
+

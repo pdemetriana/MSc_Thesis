@@ -1,0 +1,125 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="comments(comments)">
+    % for comment in comments:
+        ${h.link_to(comment.comment, request.route_url("itc_comment_v", id=comment.id))}<br />
+    % endfor
+</%def>
+
+<%def name="main()">
+    <h3>ITC datum</h3>
+    <table class="view">
+        <tr>
+            <th class="top" colspan=4>Protein and Ligand</th>
+        </tr>
+
+        <tr>
+            <th>Protein name</th>
+            <td colspan=3>${self.safeproteinlink(request.tmpl_context.record)}</td>
+        </tr>
+        <tr>
+            <th>Ligand name</th>
+            <td colspan=3>${self.safeligandlink(request.tmpl_context.record)}</td>
+        </tr>
+        <tr>
+            <th>Interaction type</th>
+            <td colspan=3>${h.link_to(request.tmpl_context.record.interaction_type.interaction_type, request.route_url("itc_interaction_type_v", id=request.tmpl_context.record.interaction_type.id))}</td>
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td colspan=3>${h.link_to("ITC data", request.route_url('itc_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Structure data</th>
+            <td colspan=3>${h.link_to("Structure data", request.route_url('itc_structure', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th class="top" colspan=4>ITC Information</th>
+        </tr>
+        <tr>
+            <th>n</th>
+            <td>${self.saferound(request.tmpl_context.record.stoich_param, 2)}</td>
+            <td>&plusmn;${self.saferound(request.tmpl_context.record.stoich_param_exp_err, 2)}</td>
+            <td>&nbsp;</td>
+        </tr>
+
+        <tr>
+            <th>&Delta;G</th>
+            <td>${self.saferound(request.tmpl_context.record.delta_g, 2)}</td>
+            <td>&plusmn;${self.saferound(request.tmpl_context.record.delta_g_exp_err, 2)}</td>
+            <td>${request.tmpl_context.record.delta_g_unit}</td>
+        </tr>
+
+        <tr>
+            <th>&Delta;H</th>
+            <td>${self.saferound(request.tmpl_context.record.delta_h, 2)}</td>
+            <td>&plusmn;${self.saferound(request.tmpl_context.record.delta_h_exp_err, 2)}</td>
+            <td>${request.tmpl_context.record.delta_h_unit}</td>
+        </tr>
+
+        <tr>
+            <th>-T&Delta;S</th>
+            <td>${self.saferound(request.tmpl_context.record.delta_s, 2)}</td>
+            <td>&plusmn;${self.saferound(request.tmpl_context.record.delta_s_exp_err, 2)}</td>
+            <td>${request.tmpl_context.record.delta_s_unit}</td>
+
+        </tr>
+        <tr>
+            <th>K<sub>D</sub></th>
+            <td>${self.saferound(request.tmpl_context.record.affinity, 2)}</td>
+            <td>&plusmn;${self.saferound(request.tmpl_context.record.affinity_exp_err, 2)}</td>
+            <td>${request.tmpl_context.record.affinity_unit}</td>
+
+        </tr>
+        <tr>
+            <th>&Delta;C<sub>P</sub></th>
+            %if request.tmpl_context.record._itc_delta_cp:
+                <td>${self.saferoundlink(request.tmpl_context.record.delta_cp, request.route_url("itc_delta_cp_v", id=request.tmpl_context.record._itc_delta_cp.id), 2)}</td>
+                <td>&plusmn;${self.saferoundlink(request.tmpl_context.record.delta_cp_exp_err, request.route_url("itc_delta_cp_v", id=request.tmpl_context.record._itc_delta_cp.id), 2)}</td>
+                <td>${request.tmpl_context.record.delta_cp_unit}</td>
+            %else:
+                <td></td>
+                <td>&plusmn;</td>
+                <td></td>
+            %endif
+
+        </tr>
+        <tr>
+            <th>Notes on error determination</th>
+            <td colspan=3 >${comments([x for x in request.tmpl_context.record.comments if x.definition == "EXP_ERROR_DET_COMMENT"])}</td>
+        </tr
+        <tr>
+            <th>General comments</th>
+            <td colspan=3>${comments([x for x in request.tmpl_context.record.comments if x.definition == "GENERAL_COMMENT"])}</td>
+
+        </tr>
+        <tr>
+            <th>Warnings</th>
+            <td colspan=3>${comments([x for x in request.tmpl_context.record.comments if x.definition_id < 6])}</td>
+
+        </tr>
+        <tr>
+            <th>Instrument</th>
+            <td colspan=3>${h.link_to(request.tmpl_context.record.instrument.name, request.route_url("itc_instrument_v", id=request.tmpl_context.record.instrument.id))}</td>
+        </tr>
+        <tr>
+            <th>Temp. (${request.tmpl_context.record.temperature_unit})</th>
+
+            <td>${self.saferound(request.tmpl_context.record.temperature, 2)}</td>
+            <th>pH</th>
+            <td>${self.saferound(request.tmpl_context.record.ph, 2)}</td>
+        </tr>
+        <tr>
+            <th>Buffer</th>
+            <td colspan=3>${h.link_to(request.tmpl_context.record.buffer.description, request.route_url("itc_buffer_v", id=request.tmpl_context.record.buffer.id))}</td>
+        </tr>
+        <tr>
+            <th>Cell content</th>
+            <td colspan=3>${request.tmpl_context.record.cell_content}</th>
+        </tr>
+        <tr>
+            <th>Reference</th>
+            <td colspan=3>${h.link_to(str(request.tmpl_context.record.citation), request.route_url("citation_v", id=request.tmpl_context.record.citation.id))}</td>
+        </tr>
+    </table>
+</%def>

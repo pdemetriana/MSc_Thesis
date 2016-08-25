@@ -1,0 +1,17 @@
+<%inherit file="/base/index.html"/>
+
+<%def name="bartitle()">
+    <h2>Citation</h2>
+</%def>
+
+<%def name="submenu()">
+    <h2>Citation</h2>
+    <h3>Browse</h3>
+    <ul>
+        <li><a href="${request.route_url('citation_br', page='1')}">Citations</a></li>
+        <li><a href="${request.route_url('author_br', page='1')}">Authors</a></li>
+        <li><a href="${request.route_url('journal_br', page='1')}">Journals</a></li>
+    </ul>
+</%def>
+
+

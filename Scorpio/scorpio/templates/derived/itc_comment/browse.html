@@ -1,0 +1,32 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="buildrow(itc_comment, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td>${h.link_to(itc_comment.comment, request.route_url('itc_comment_v', id=itc_comment.id))}</td>
+        <td>${h.link_to(itc_comment.definition, request.route_url('itc_comment_definition_v', id=itc_comment.definition_id))}</td>
+        </tr>
+</%def>
+
+<%def name="main()">
+    <h3>Browse ITC comments</h3>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${ request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse">
+    <tr><th>ITC comment</th><th>ITC comment defintion</th></tr>
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${ request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No ITC comments available.
+    </p>
+    % endif
+</%def>

@@ -1,0 +1,11 @@
+${h.hidden(name='id')}
+${h.field(
+    "ITC comment definition",
+    h.select("comment_definition_id", None, request.tmpl_context.comment_definition_options, prompt="Please choose one..." ),
+    required=True,
+)}
+${h.field(
+    "ITC comment",
+    h.textarea(name='comment'),
+    required=True,
+)}

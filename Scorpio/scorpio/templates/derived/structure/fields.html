@@ -1,0 +1,39 @@
+${h.hidden(name="id")}
+${h.field(
+    "Protein",
+    h.select("protein_id", None, request.tmpl_context.protein_options, prompt="Please choose one..."),
+    required=True,
+)
+}
+${h.field(
+    "Ligand",
+    h.select("ligand_id", None, request.tmpl_context.ligand_options, prompt="Please choose one..."),
+    required=True,
+)
+}
+${h.field(
+    "PDB code",
+    h.text(name="pdb_code"),
+    required=True,
+)}
+${h.field(
+    "Method",
+    h.select("method", None, [['X-ray Cryst', 'X-ray Cryst'], ['NMR', 'NMR']]),
+    required=True,
+)}
+${h.field(
+    "Resolution",
+    h.text(name="resolution"),
+    required=False,
+)}
+${h.field(
+    "R-factor",
+    h.text(name="r_factor"),
+    required=False,
+)}
+${h.field(
+    "Citation",
+    h.select("citation_id", None, request.tmpl_context.citation_options, prompt="Please choose one..."),
+    required=True,
+)
+}

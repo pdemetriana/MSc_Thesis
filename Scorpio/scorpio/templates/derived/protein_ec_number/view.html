@@ -1,0 +1,15 @@
+<%inherit file="/derived/protein.html"/>
+
+<%def name="main()">
+    <table class="view">
+        <tr>
+            <th>Protein EC number</th>
+            <td>${request.tmpl_context.record.ec_number}</th>
+        </tr>
+        <tr>
+            <th>Protein data</th>
+            <td>${h.link_to("Protein data", request.route_url('protein_ec_number_protein', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+

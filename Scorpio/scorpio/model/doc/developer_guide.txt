@@ -1,0 +1,521 @@
+Developer Guide
+===============
+
+This will contain instructions for developers of the application.
+
+Manipulating ITC data
+---------------------
+
+Classes and functions for dealing with ITC data are present in the :mod:`itc`
+module.
+
+Basic classes representing thermodynamic parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+An ITC titration measures both the change in enthalpy (:class:`DeltaH`) and the
+affinity (:class:`Affinity`) directly. Using standard thermodynamic formulae
+the change in entropy (:class:`DeltaS`) and change in Gibb's free energy
+(:class:`DeltaG`) can both be derived. The example below shows the four basic
+classes four dealing with these thermodynamic parameters.
+
+>>> from scorpio.model import itc
+>>> dg = itc.DeltaG(-10.0, 'kcal/mol')
+>>> print '%.2f %s' % dg.get_raw_data()
+-10.00 kcal/mol
+
+Notice that both the value and the unit are required when creating this dg
+object. This means that we can convert the data to a different unit.
+
+>>> print '%.2f %s' % dg.get_data('kJ/mol')
+-41.84 kJ/mol
+
+The :class:`DeltaH` and :class:`Affinity` classes can be initialised in a
+similar fashion.
+
+>>> dh = itc.DeltaH(-50.0, 'kJ/mol')
+>>> ka = itc.Affinity(10, 'uM')
+
+The :class:`DeltaS` class is somewhat different in that it also requires a
+temperature (:class:`Temperature`).
+
+>>> t = itc.Temperature(25, 'C')
+>>> print '%.2f %s' % t.get_data('K')
+298.15 K
+>>> ds = itc.DeltaS(10.0, 'kJ/mol', t)
+>>> print '%.2f %s' % ds.get_data('kJ/mol')
+10.00 kJ/mol
+
+Notice that there are also units that incorporate the effects of the temperature.
+
+>>> print '%.2f %s' % ds.get_data('kJ/mol/K')
+0.03 kJ/mol/K
+
+The reason for this is that it is common to report the change in entropy value
+as -T.DeltaS = -10 kJ/mol (which means that the change in entropy contributes
+favourably to the change in Gibb's free energy by 10 kJ/mol when scaling by the
+temperature). The code below illustrates how one would deal with such a scenario.
+
+>>> ds = itc.DeltaS(-10.0, '-kJ/mol', t)
+>>> print '%.2f %s' % ds.get_data('kJ/mol')
+10.00 kJ/mol
+
+To find out what the value of the change in entropy is (when excluding the
+temperature scaling) one needs to include the '/K' in the unit. Also, in these
+instances it is common to report the change in entropy in 'J' or 'cal' rather
+than 'kJ' or 'kcal'.
+
+>>> print '%.2f %s' % ds.get_data('J/mol/K')
+33.54 J/mol/K
+
+
+Checking the quality of thermodynamic parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Although ITC is a great technique for measuring changes in thermodynamics it
+has some caveats.
+
+1. Reliable measurements can only be obtained when the change in Gibb's free energy is in the range of -20 to -60 kJ/mol (unless one uses competition)
+2. ITC experiments rely on measuring the heat directly so if the change in enthalpy is small the experimental data will be difficult to interpret
+  
+>>> dg_high = itc.DeltaG(-5.0, 'kJ/mol')
+>>> dg_low = itc.DeltaG(-70.0, 'kJ/mol')
+
+We can check the quality of these :class:`DeltaG` instances.
+
+>>> itc.check_delta_g(dg_high)
+(3, 'DeltaG (-5.00) greater than -20.00. It is difficult to interpred ITC data if DeltaG is greater than -20.00 as the sigmoidal curve becomes too shallow.')
+>>> itc.check_delta_g(dg_low)
+(3, 'DeltaG (-70.00) less than -60.00. It is difficult to interpred ITC data if DeltaG is less than -60.00 as the sigmoidal curve becomes too sharp. This can be overcome by performing displacement experiments.')
+
+The number 3 in the examples above represent the fact that these warning messages represent DUBIOUS_DATA.
+
+>>> itc.DUBIOUS_DATA
+3
+
+Other warning codes are MISSING_DATA (1), INCONSISTENT_DATA (2).
+
+We can also check the quality of change in enthalpy values.
+
+>>> close_to_zero_dh = itc.DeltaH(4.0, 'kJ/mol')
+>>> itc.check_delta_h(close_to_zero_dh)
+(3, 'DeltaH (4.00) in range 10.00 to -10.00. It is difficult to interpret ITC data as DeltaH approaches 0.')
+
+
+Deriving missing thermodynamic parameters
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+It is common to only report a representative subset of thermodynamic parameters (e.g. :class:`Affinity`, :class:`DeltaH`, :class:`Temperature`) from which all the other thermodynamic parameters can be calculated using standard thermodynamic formulae.
+
+Suppose a particular paper reports the affinity, change in enthalpy and the temperature.
+
+>>> ka = itc.Affinity(10.0, 'uM')
+>>> dh = itc.DeltaH(-30.0, 'kJ/mol')
+>>> T = itc.Temperature(25.0, 'C')
+
+The change in Gibb's free energy and change in entropy could be obtained by:
+
+>>> dg = itc.derive_delta_g(affinity=ka, delta_h=dh, temperature=T)
+>>> print '%.2f %s' % dg.get_data('kJ/mol')
+-28.54 kJ/mol
+>>> ds = itc.derive_delta_s(affinity=ka, delta_g=dg, delta_h=dh, temperature=T)
+>>> print '%.2f %s' % ds.get_data('kJ/mol')
+-1.46 kJ/mol
+
+
+All the hard work is already done
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+It would be quite tedious to have to manually derive all missing parameters and
+check the quality of the data. However, this is not necessary. Everything can
+be handled automatically be the :class:`ITCData` class.
+
+Let us use the same example data.
+
+>>> ka = itc.Affinity(10.0, 'uM')
+>>> dh = itc.DeltaH(-30.0, 'kJ/mol')
+>>> T = itc.Temperature(25.0, 'C')
+
+Then all we have to do is:
+
+>>> itc_data = itc.ITCData(affinity=ka, delta_h=dh, temperature=T)
+>>> print itc_data
+<ITCData(Kd=10.000, DG=-28.54, DH=-30.00, TDS=-1.46, T=298.15)>
+
+The :class:`ITCData` class provides access to all thermodynamic parameters in standardised units as well as the raw data.
+
+>>> print '%.2f %s' % (itc_data.temperature, itc_data.temperature_unit)
+298.15 K
+>>> print '%.2f %s' % (itc_data.temperature_raw, itc_data.temperature_unit_raw)
+25.00 C
+
+Furthermore the :class:`ITCData` class provides access to any warnings regarding the data quality. In this instance there are none.
+
+>>> print itc_data.data_quality_warnings
+[]
+
+However, suppose that the orignial paper also reported a change in Gibb's free
+energy of -29.0 kJ/mol
+
+>>> dg = itc.DeltaG(-29.0, 'kJ/mol')
+>>> itc_data = itc.ITCData(affinity=ka, delta_g=dg, delta_h=dh, temperature=T)
+>>> print itc_data
+<ITCData(Kd=10.000, DG=-29.00, DH=-30.00, TDS=-1.00, T=298.15)>
+>>> print itc_data.data_quality_warnings
+[(2, 'DeltaG (-29.00) != -R.T.ln(Ka) (-28.54). Tolerance range from -29.29 to -28.71')]
+
+The number 2 in the examples above represent the fact that these warning
+messages represent INCONSISTENT_DATA.
+
+>>> itc.INCONSISTENT_DATA
+2
+
+Other warning codes are MISSING_DATA (1), DUBIOUS_DATA (3).
+
+
+What about buffer conditions and other experimental detail?
+-----------------------------------------------------------
+
+Classes for adding experimental detail to an itc experiment are available from
+the :mod:`itc_helpers` module. The module contains the classes
+:class:`ITCInstrument`, :class:`ITCInteractionType`, :class:`ITCBuffer`,
+:class:`ITCComment` and :class:`ITCCommentDefinition`.
+
+Let us start by creating an ITC instrument.
+
+>>> from scorpio.model.itc_helpers import ITCInstrument
+>>> instrument = ITCInstrument('VP-ITC Microcalorimeter')
+>>> instrument
+<ITCInstrument('VP-ITC Microcalorimeter')>
+>>> instrument.name
+'VP-ITC Microcalorimeter'
+
+Followed by an interaction type.
+
+>>> from scorpio.model.itc_helpers import ITCInteractionType
+>>> interaction_type = ITCInteractionType('Biological')
+>>> interaction_type
+<ITCInteractionType('Biological')>
+>>> interaction_type.interaction_type
+'Biological'
+
+And a buffer.
+
+>>> from scorpio.model.itc_helpers import ITCBuffer
+>>> itc_buffer_text = 'NaCl 100 nM, HEPES 100 nM'
+>>> b = ITCBuffer(itc_buffer_text)
+>>> print b.description
+NaCl 100 nM, HEPES 100 nM
+
+This data along with the :class:`ITCData` class data can all be combnined into
+an instance of the :class:`ITC` class.
+
+>>> itc_experiment = itc.ITC(itc_data,
+...    instrument=instrument,
+...    interaction_type=interaction_type,
+...    buffer=b)
+
+
+Manipulating structural data
+----------------------------
+
+The ITC experiments of interest for SCORPIO are those concerned with
+protein-ligand interactions. Furthermore, the protein-ligand interactions of
+interest to SCORPIO are those that have 3D structural data.
+
+Proteins
+^^^^^^^^
+
+Classes for manipulating protein information can be found in the :mod:`protein`
+module.
+
+>>> from scorpio.model import protein
+
+Proteins are defined by an amino acid sequence and a unique name.
+
+>>> p = protein.Protein('HIV-1 Protease (K14R/D25N/S37N/I64V)',
+...    'PQITLWQRPL VTIRIGGQLK EALLNTGADD TVLEEMNLPG KWKPKMIGGI GGFIKVRQYD QIPVEICGHK AIGTVLVGPT PVNIIGRNLL TQIGCTLNF ')
+>>> print p
+<Protein('HIV-1 Protease (K14R/D25N/S37N/I64V)')>
+>>> print p.aa_seq
+PQITLWQRPLVTIRIGGQLKEALLNTGADDTVLEEMNLPGKWKPKMIGGIGGFIKVRQYDQIPVEICGHKAIGTVLVGPTPVNIIGRNLLTQIGCTLNF
+
+However, it would be usefule to be able to associate the protein above with all other HIV-1 Proteases. This can be acihieved by useing a root name.
+
+>>> root_name = protein.ProteinRootName('HIV-1 Protease')
+
+Other attributes of interest include the source of the protein, its
+classifiction and its enzyme classification (EC) number.
+
+>>> source = protein.ProteinSource('Human immunodeficiency virus type 1')
+>>> classification = protein.ProteinClassification('Hydrolase')
+>>> ec_number = protein.ProteinECNumber('3.4.23.16')
+
+To create a protein instance with all the attributes above.
+
+>>> p = protein.Protein('HIV-1 Protease (K14R/D25N/S37N/I64V)',
+...    'PQITLWQRPL VTIRIGGQLK EALLNTGADD TVLEEMNLPG KWKPKMIGGI GGFIKVRQYD QIPVEICGHK AIGTVLVGPT PVNIIGRNLL TQIGCTLNF ',
+...    root_name=root_name,
+...    source=source,
+...    classification=classification,
+...    ec_number=ec_number)
+>>> print p.name
+HIV-1 Protease (K14R/D25N/S37N/I64V)
+>>> print p.root_name.root_name
+HIV-1 Protease
+>>> print p.source.source
+Human immunodeficiency virus type 1
+>>> print p.classification.classification
+Hydrolase
+>>> print p.ec_number.ec_number
+3.4.23.16
+
+
+Ligands
+^^^^^^^
+Classes for manipulating ligand information can be found in the :mod:`ligand`
+module.
+
+>>> from scorpio.model import ligand
+
+Ligands are defined by a SMILES string and a name.
+
+>>> l = ligand.Ligand('Saquinavir',
+...    'CC(C)(C)NC(=O)[C@@H]1C[C@@H]2CCCC[C@@H]2CN1C[C@@H]([C@H](CC3=CC=CC=C3)NC(=O)[C@H](CC(=O)N)NC(=O)C4=NC5=CC=CC=C5C=C4)O')
+
+Other attributes of interest include the ligand classification and any HETATM
+abbreviations used to define the ligand.
+
+>>> ligand_classification = ligand.LigandClassification('Miscellaneous')
+>>> ligand_hetnams = []
+>>> for hetnam in ['ASN', 'DIQ', 'HPH', 'NTB', 'QNC']:
+...    ligand_hetnams.append(ligand.LigandHetnam(hetnam))
+...
+
+To create a ligand instance with all the attributes above.
+
+>>> l = ligand.Ligand('Saquinavir',
+...    'CC(C)(C)NC(=O)[C@@H]1C[C@@H]2CCCC[C@@H]2CN1C[C@@H]([C@H](CC3=CC=CC=C3)NC(=O)[C@H](CC(=O)N)NC(=O)C4=NC5=CC=CC=C5C=C4)O',
+...    classification=ligand_classification,
+...    hetnams=ligand_hetnams)
+>>> print l.name
+Saquinavir
+>>> print l.smiles
+NC(=O)C[C@H](NC(=O)c1ccc2ccccc2n1)C(=O)N[C@H](Cc1ccccc1)[C@@H](O)CN1C[C@@H]2CCCC[C@@H]2C[C@@H]1C(=O)NC(C)(C)C
+>>> print l.classification.classification
+Miscellaneous
+>>> print l.hetnams
+[<LigandHetnam('ASN')>, <LigandHetnam('DIQ')>, <LigandHetnam('HPH')>, <LigandHetnam('NTB')>, <LigandHetnam('QNC')>]
+
+Ligands also have an additional `molecule` attribute. Is a `pybel
+<http://openbabel.org/wiki/Python>`_ molecule instance initiated using the
+ligand SMILES string. It can be used to calculate and access additional ligand
+descriptors on the fly.
+
+>>> print '%s has a molecular weight of %.2f' % (l.name, l.molecule.molwt)
+Saquinavir has a molecular weight of 670.84
+
+PDB structures
+^^^^^^^^^^^^^^
+
+A class for manipulating PDB information can be found in the :mod:`Structure` module.
+
+>>> from scorpio.model import structure
+
+Below is an example using the protein and the ligand from the previous sections.
+
+>>> pdb_structure = structure.Structure(
+...    pdb_code='1mtb',
+...    protein=p,
+...    ligand=l,
+...    resolution=2.50,
+...    r_factor=0.191)
+>>> print pdb_structure
+<Structure('1mtb')>
+
+
+Manipulating citations
+----------------------
+
+The :mod:`citation` contains classes for manipulating references to original
+publications.
+
+>>> from scorpio.model import citation
+
+Suppose that author A. N. Other has published a paper titled 'Something important' in volume 2 of the journal of 'Important Stuff', pages 111-115. It was published in 2009 and has the pubmed identifier 12345678
+
+>>> a = citation.Author('A. N.', 'Other')
+>>> author_list = [a]
+>>> j = citation.Journal('Important Stuff', 'Imp. Stuff.')
+>>> c = citation.Citation(journal=j,
+...    authors=author_list,
+...    title='Something important',
+...    volume=2,
+...    first_page=111,
+...    last_page=115,
+...    year=2008,
+...    pubmed_id=12345678)
+
+Citations can be added to instances of the :class:`ITC` class.
+
+>>> itc_experiment = itc.ITC(itc_data,
+...    instrument=instrument,
+...    interaction_type=interaction_type,
+...    buffer=b,
+...    citation=c)
+
+Citations can be added to instances of the :class:`Structure` class.
+
+>>> pdb_structure = structure.Structure(
+...    pdb_code='1mtb',
+...    protein=p,
+...    ligand=l,
+...    resolution=2.50,
+...    r_factor=0.191,
+...    citation=c)
+
+Mapping the python classes onto relational database tables
+----------------------------------------------------------
+
+SCORPIO is a relational database containing protein-ligand complexes that have
+been characterised both in terms of caloromitry and 3D structure. Most of the
+classes described in the modules above are meant to be used as object
+relational mappers to the relational database tables in SCORPIO.
+
+All the SCOPRIO tables and mappers are available from the
+:mod:`scorpio2_tables` module.
+
+The object relational mappers rely on the `sqlalchemy
+<http://www.sqlalchemy.org/>`_ module.
+
+To connect to the database import all the SCORPIO tables and mappers.
+
+>>> from scorpio.model.scorpio_tables import *
+
+Import key elements from the :mod:`sqlalchemy` module.
+
+>>> from sqlalchemy import create_engine
+>>> from sqlalchemy.exceptions import IntegrityError
+>>> from sqlalchemy.orm import sessionmaker
+
+For playing around create an in-memory `sqlite <http://www.sqlite.org/>`_ database.
+
+>>> engine = create_engine('sqlite:///:memory:', echo=False)
+>>> METADATA.create_all(engine)
+>>> Session = sessionmaker(bind=engine, autoflush=True, autocommit=False)
+>>> session = Session()
+
+Let's start by adding a citation.
+
+>>> a = citation.Author('A. N.', 'Other')
+>>> session.add(a)
+>>> author_list = [a]
+>>> j = citation.Journal('Important Stuff', 'Imp. Stuff.')
+>>> session.add(j)
+>>> c = citation.Citation(journal=j,
+...    authors=author_list,
+...    title='Something important',
+...    volume=2,
+...    first_page=111,
+...    last_page=115,
+...    year=2008,
+...    pubmed_id=12345678)
+>>> session.add(c)
+
+Followed by adding a protein and a ligand to the database.
+
+>>> root_name = protein.ProteinRootName('HIV-1 Protease')
+>>> session.add(root_name)
+>>> source = protein.ProteinSource('Human immunodeficiency virus type 1')
+>>> session.add(source)
+>>> classification = protein.ProteinClassification('Hydrolase')
+>>> session.add(classification)
+>>> ec_number = protein.ProteinECNumber('3.4.23.16')
+>>> session.add(ec_number)
+>>> p = protein.Protein('HIV-1 Protease (K14R/D25N/S37N/I64V)',
+...    'PQITLWQRPL VTIRIGGQLK EALLNTGADD TVLEEMNLPG KWKPKMIGGI GGFIKVRQYD QIPVEICGHK AIGTVLVGPT PVNIIGRNLL TQIGCTLNF ',
+...    root_name=root_name,
+...    source=source,
+...    classification=classification,
+...    ec_number=ec_number)
+>>> session.add(p)
+>>>
+>>> ligand_classification = ligand.LigandClassification('Miscellaneous')
+>>> session.add(ligand_classification)
+>>> ligand_hetnams = []
+>>> for hetnam in ['ASN', 'DIQ', 'HPH', 'NTB', 'QNC']:
+...    tmp_hetnam = ligand.LigandHetnam(hetnam)
+...    session.add(tmp_hetnam)
+...    ligand_hetnams.append(tmp_hetnam)
+...
+>>> l = ligand.Ligand('Saquinavir',
+...    'CC(C)(C)NC(=O)[C@@H]1C[C@@H]2CCCC[C@@H]2CN1C[C@@H]([C@H](CC3=CC=CC=C3)NC(=O)[C@H](CC(=O)N)NC(=O)C4=NC5=CC=CC=C5C=C4)O',
+...    classification=ligand_classification,
+...    hetnams=ligand_hetnams)
+>>> session.add(l)
+
+Now we can add a structure.
+
+>>> pdb_structure = structure.Structure(
+...    pdb_code='1mtb',
+...    protein=p,
+...    ligand=l,
+...    citation=c,
+...    resolution=2.50,
+...    r_factor=0.191)
+>>> session.add(pdb_structure)
+
+The data is not yet commited to the database. In order to commit it we need to
+execute the command.
+
+>>> session.commit()
+
+The data we just added includes one-to-many and many-to-many relationships in
+the underlying database. Notice that we do not need to worry about that as the
+:mod:`sqlalchemy` takes care of that for us once we have defined the
+relationships in the mappers (:mod:`scorpio2_tables`).
+
+We can now query the database.
+
+>>> for pdb in session.query(Structure):
+...     print "%s, %s, %s, %s" % (pdb.pdb_code,
+...         pdb.ligand.name,
+...         pdb.protein.name,
+...         pdb.citation.pubmed_id)
+1mtb, Saquinavir, HIV-1 Protease (K14R/D25N/S37N/I64V), 12345678
+
+Let us continue by adding some ITC experimental conditions.
+
+>>> instrument = ITCInstrument('VP-ITC Microcalorimeter')
+>>> session.add(instrument)
+>>> interaction_type = ITCInteractionType('Biological')
+>>> session.add(interaction_type)
+>>> itc_buffer_text = 'NaCl 100 nM, HEPES 100 nM'
+>>> b = ITCBuffer(itc_buffer_text)
+>>> session.add(b)
+
+We can now add a complete ITC experiment to the database.
+
+>>> itc_experiment = itc.ITC(itc_data,
+...    protein=p,
+...    ligand=l,
+...    citation=c,
+...    instrument=instrument,
+...    interaction_type=interaction_type,
+...    buffer=b)
+>>> session.add(itc_experiment)
+
+Again we need to commit the data.
+
+>>> session.commit()
+
+A simple query reveals that the data has been added to the database.
+
+>>> for itc in session.query(ITC):
+...     print "%s, %s, %.2f, %.2f, %.2f, %.2f, %.2f, %i" % (itc.protein.name,
+...         itc.ligand.name,
+...         itc.affinity,
+...         itc.delta_g,
+...         itc.delta_h,
+...         itc.delta_s,
+...         itc.temperature,
+...         itc.citation.volume)
+HIV-1 Protease (K14R/D25N/S37N/I64V), Saquinavir, 10.00, -29.00, -30.00, -1.00, 298.15, 2

@@ -1,0 +1,15 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="main()">
+    <h3>ITC interaction type</h3>
+    <table class="view">
+        <tr>
+            <th>ITC interaction type</th>
+            <td>${request.tmpl_context.record.interaction_type}</th>
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td>${h.link_to("ITC data", request.route_url('itc_interaction_type_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>

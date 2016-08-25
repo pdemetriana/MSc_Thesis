@@ -1,0 +1,35 @@
+<%inherit file="/derived/ligand.html"/>
+
+<%def name="main()">
+    <h3>Ligand</h3>
+    <table class="view">
+        <tr>
+            <td rowspan="6" class="ligand_diagram"><img src=${request.static_url("scorpio:static/ligand_diagrams/" +str(request.tmpl_context.record.ligand_id) +".png")} alt="${request.tmpl_context.record.name} diagram" />
+            </td>
+            <th>Name</th>
+            <td>${h.link_to(request.tmpl_context.record.name, request.route_url('ligand_v', id=request.tmpl_context.record.ligand_id))}</td>
+        </tr>
+        <tr>
+            <th>Molecular Weight</th>
+            <td>${request.tmpl_context.record.molecular_weight}</td>
+        </tr>
+        <tr>
+            <th>Hydrogen Bond Acceptors</th>
+            <td>#${request.tmpl_context.record.Hacceptors}</td>
+        </tr>
+        <tr>
+            <th>Hydrogen Bond Donors</th>
+            <td>#${request.tmpl_context.record.Hdonors}</td>
+        </tr>
+        <tr>
+            <th>Rotating Bonds</th>
+            <td>#${request.tmpl_context.record.rotatingBonds}</td>
+        </tr>
+        <tr>
+            <th>Polarizability</th>
+            <td>${request.tmpl_context.record.polarizability} &plusmn; 10.5 10<sup>-24</sup> cm<sup>3</sup></td>
+        </tr>
+    </table>
+</%def>
+
+

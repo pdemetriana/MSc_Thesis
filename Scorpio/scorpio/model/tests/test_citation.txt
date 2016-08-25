@@ -1,0 +1,77 @@
+>>> from scorpio.model.citation import *
+>>> journal1 = Journal('Test1', 'T1')
+>>> journal2 = Journal('Test2', 'T2')
+>>> journal1_mod_name = Journal('test1', 'T1')
+>>> journal1_mod_abb = Journal('Test1', 't1')
+>>> journal1_diff_name = Journal('Diff', 'T1')
+>>> journal1_diff_abb = Journal('Test1', 'diff')
+>>> journal1 == journal2
+False
+>>> journal1 != journal2
+True
+>>> journal1 == journal1_mod_name
+True
+>>> journal1 != journal1_mod_name
+False
+>>> journal1 == journal1_mod_abb
+True
+>>> journal1 != journal1_mod_abb
+False
+>>> journal1 == journal1_diff_name
+True
+>>> journal1 != journal1_diff_name
+False
+>>> journal1 == journal1_diff_abb
+True
+>>> journal1 != journal1_diff_abb
+False
+>>>
+>>> author1 = Author('Tjelvar S. G.', 'Olsson')
+>>> author2 = Author('Mark A.', 'Williams')
+>>> author1_fn_lc = Author('tjelvar s. g.', 'Olsson')
+>>> author1_sn_lc = Author('Tjelvar S. G.', 'olsson')
+>>> author1 == author2
+False
+>>> author1 != author2
+True
+>>> author1 == author1_fn_lc
+True
+>>> author1 != author1_fn_lc
+False
+>>> author1 == author1_sn_lc
+True
+>>> author1 != author1_sn_lc
+False
+>>>
+>>> citation1 = Citation(journal1,
+...                      [author1, author2],
+...                      'Title of paper',
+...                      234,                  # volume
+...                      1345,                 # first page
+...                      1350,                 # last page
+...                      2009,                 # year
+...                      'PM1234566')          # pubmed id
+>>> citation1_diff_vol = Citation(journal1,
+...                      [author1, author2],
+...                      'Title of paper',
+...                      235,                  # volume
+...                      1345,                 # first page
+...                      1350,                 # last page
+...                      2009,                 # year
+...                      'PM1234566')          # pubmed id
+>>> citation1_diff_title = Citation(journal1,
+...                      [author1, author2],
+...                      'Diff title of paper',
+...                      234,                  # volume
+...                      1345,                 # first page
+...                      1350,                 # last page
+...                      2009,                 # year
+...                      'PM1234566')          # pubmed id
+>>> citation1 == citation1_diff_vol
+False
+>>> citation1 != citation1_diff_vol
+True
+>>> citation1 == citation1_diff_title
+True
+>>> citation1 != citation1_diff_title
+False

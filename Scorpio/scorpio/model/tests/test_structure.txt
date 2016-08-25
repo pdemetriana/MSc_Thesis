@@ -1,0 +1,21 @@
+>>> from scorpio.model.structure import *
+>>> from scorpio.model.protein import Protein
+>>> from scorpio.model.ligand import Ligand
+>>>
+>>> lig1 = Ligand('Pyridine', 'c1cnccc1')
+>>> prot1 = Protein('Poly alanine', 'AAAAAA')
+>>> pdb1 = Structure('xxx1', prot1, lig1)
+>>> "%s %s %s" % (pdb1.pdb_code, pdb1.ligand.smiles, pdb1.protein.name)
+'xxx1 c1cccnc1 Poly alanine'
+>>> lig2 = Ligand('Propane', 'CCC')
+>>> prot2 = Protein('Poly proline', 'PPPPPP')
+>>> pdb2 = Structure('xxx2', prot2, lig2)
+>>> pdb1 == pdb2
+False
+>>> pdb1 != pdb2
+True
+>>> pdb3 = Structure('XXX1', prot1, lig1)
+>>> pdb1 == pdb3
+True
+>>> pdb1 != pdb3
+False

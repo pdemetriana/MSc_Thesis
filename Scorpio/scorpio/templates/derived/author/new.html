@@ -1,0 +1,12 @@
+<%inherit file="/derived/citation.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h2>Create a new author</h2>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('author', action='create'), table_class='form')}
+    ${request.tmpl_context.form.field(label='First name', type='text', name='first_name', required=True)}
+    ${request.tmpl_context.form.field(label='Last name', type='text', name='last_name', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Create author'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>
+

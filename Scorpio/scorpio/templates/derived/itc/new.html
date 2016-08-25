@@ -1,0 +1,10 @@
+<%inherit file="/derived/itc.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new ITC datum</h3>
+    ${h.form(request.route_url('itc', action='process_itc'))}
+    ${fields.body()}
+    ${h.end_form()}
+</%def>
+

@@ -1,0 +1,16 @@
+<%inherit file="/derived/itc.html"/>
+
+<%def name="main()">
+    <h3>ITC buffer</h3>
+    <table class="view">
+        <tr>
+            <th>ITC buffer</th>
+            <td>${request.tmpl_context.record.description}</th>
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td>${h.link_to("ITC data", request.route_url('itc_buffer_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+

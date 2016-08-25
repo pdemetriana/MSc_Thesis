@@ -1,0 +1,2 @@
+include *.txt *.ini *.cfg
+recursive-include scorpio *.ico *.png *.css *.gif *.jpg *.pt *.txt *.html *.xml

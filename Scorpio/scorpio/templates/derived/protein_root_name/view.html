@@ -1,0 +1,27 @@
+<%inherit file="/derived/protein.html"/>
+
+<%def name="main()">
+    <h3>Protein name</h3>
+    <table class="view">
+        <tr>
+            <th class="top" colspan=2>Protein root name</th>
+        </tr>
+        <tr>
+            <th>Protein name</th>
+            <td>${request.tmpl_context.record.root_name}
+        </tr>
+        <tr>
+            <th>ITC data</th>
+            <td>${h.link_to("ITC data", request.route_url('protein_root_name_itc', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Structure data</th>
+            <td>${h.link_to("Structure data", request.route_url('protein_root_name_structure',  page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+        <tr>
+            <th>Variants</th>
+            <td>${h.link_to("Variant data", request.route_url('protein_root_name_protein', page='1', id=request.tmpl_context.record.id))}</td>
+        </tr>
+    </table>
+</%def>
+

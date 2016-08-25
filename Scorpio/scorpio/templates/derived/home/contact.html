@@ -1,0 +1,20 @@
+<%inherit file="/derived/home.html"/>
+
+<%def name="main()">
+    <h3>Contact details</h3>
+    <p>
+    Scorpio is an ongoing project and feeback is greatly appreciated. Please contact us:
+    <ul> 
+        <li>With information about other protein-ligand complexes with determined structures and ITC data,
+        please include pdb code(s) as well as refereces to the original papers</li> 
+        <li>With feedback of what you have used the database for</li> 
+        <li>With feedback on what you would like the database to be able to do</li> 
+        <li>If you are interested in setting up a collaboration</li> 
+        <li>If you want more information about SCORPIO</li> 
+    </ul> 
+    </p> 
+    <p>
+    Please email: 
+    </p> 
+    <img src=${request.static_url('scorpio:static/scorpiomail.png')} alt='email' />
+</%def>

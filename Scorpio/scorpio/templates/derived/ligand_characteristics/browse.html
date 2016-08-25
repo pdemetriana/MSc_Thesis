@@ -1,0 +1,30 @@
+<%inherit file="/derived/ligand.html"/>
+
+
+<%def name="buildrow(ligand_features, odd=True)">
+    %if odd:
+        <tr class="odd">
+    %else:
+        <tr class="even">
+    % endif
+        <td><a class="thumbnail" href="/ligand_features/id/${ligand_features.ligand_id}">${ligand_features.name}</a></td>
+        </tr>
+</%def>
+
+<%def name="main()"><h2>Browse ligands</h2>
+    % if len(request.tmpl_context.paginator):
+    <p class="nav">${ request.tmpl_context.paginator.pager('$link_previous $link_next') }</p>
+    <table class="browse">
+    <% counter=0 %>
+    % for item in request.tmpl_context.paginator:
+        ${buildrow(item, counter%2)}
+        <% counter += 1 %>
+    % endfor
+    </table>
+    <p class="nav">${ request.tmpl_context.paginator.pager('~2~') }</p>
+    % else:
+    <p>
+        No ligands available.
+    </p>
+% endif
+</%def>

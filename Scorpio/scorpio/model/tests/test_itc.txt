@@ -1,0 +1,916 @@
+# Import the itc module
+>>> from scorpio.model.itc import *
+
+# Test deriving a temperature from an Affinity and a DeltaG
+>>> affinity = Affinity(10.0, 'uM')
+>>> delta_g = DeltaG(-28.54, 'kJ/mol')
+>>> t = derive_temperature(affinity=affinity, delta_g=delta_g)
+>>> '%.2f, %s' % t.get_data('K')
+'298.15, K'
+
+
+# Test the Temperature class
+>>> t = Temperature(25, 'C')
+>>> '%.2f, %s' % t.get_data('K')
+'298.15, K'
+>>> '%.2f, %s' % t.get_data('C')
+'25.00, C'
+>>> '%.2f, %s' % t.get_raw_data()
+'25.00, C'
+>>> t = Temperature(298.15, 'K')
+>>> '%.2f, %s' % t.get_data('C')
+'25.00, C'
+>>> '%.2f, %s' % t.get_data('K')
+'298.15, K'
+>>> '%.2f, %s' % t.get_raw_data()
+'298.15, K'
+
+# Test the AbstractDeltaParameter class (used for DeltaG and DeltaH)
+# Using kcal/mol as raw data
+>>> d = AbstractDeltaParameter(10, 'kcal/mol')
+>>> '%.2f, %s' % d.get_data('kcal/mol')
+'10.00, kcal/mol'
+>>> '%.2f, %s' % d.get_data('cal/mol')
+'10000.00, cal/mol'
+>>> '%.2f, %s' % d.get_data('kJ/mol')
+'41.84, kJ/mol'
+>>> '%.2f, %s' % d.get_data('J/mol')
+'41840.00, J/mol'
+
+# Using cal/mol as raw data
+>>> d = AbstractDeltaParameter(10, 'cal/mol')
+>>> '%.3f, %s' % d.get_data('kcal/mol')
+'0.010, kcal/mol'
+>>> '%.2f, %s' % d.get_data('cal/mol')
+'10.00, cal/mol'
+>>> '%.3f, %s' % d.get_data('kJ/mol')
+'0.042, kJ/mol'
+>>> '%.2f, %s' % d.get_data('J/mol')
+'41.84, J/mol'
+
+# Using kJ/mol as raw data
+>>> d = AbstractDeltaParameter(41.84, 'kJ/mol')
+>>> '%.2f, %s' % d.get_data('kcal/mol')
+'10.00, kcal/mol'
+>>> '%.2f, %s' % d.get_data('cal/mol')
+'10000.00, cal/mol'
+>>> '%.2f, %s' % d.get_data('kJ/mol')
+'41.84, kJ/mol'
+>>> '%.2f, %s' % d.get_data('J/mol')
+'41840.00, J/mol'
+
+# Using J/mol as raw data
+>>> d = AbstractDeltaParameter(41.84, 'J/mol')
+>>> '%.3f, %s' % d.get_data('kcal/mol')
+'0.010, kcal/mol'
+>>> '%.2f, %s' % d.get_data('cal/mol')
+'10.00, cal/mol'
+>>> '%.3f, %s' % d.get_data('kJ/mol')
+'0.042, kJ/mol'
+>>> '%.2f, %s' % d.get_data('J/mol')
+'41.84, J/mol'
+
+# Test the DeltaS class
+>>> t = Temperature(25.0, 'C')
+
+# Using kcal/mol/T as raw data
+>>> ds = DeltaS(10, 'kcal/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'10.00, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'10000.00, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'-10.00, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'-10000.00, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'2981.50, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'2981500.00, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-2981.50, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-2981500.00, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'41.84, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'41840.00, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'-41.84, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-41840.00, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'12474.60, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'12474596.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-12474.60, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-12474596.00, -J/mol'
+
+# Using cal/mol/T as raw data
+>>> ds = DeltaS(10, 'cal/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'0.01, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'10.00, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'-0.01, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'-10.00, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'2.98, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'2981.50, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-2.98, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-2981.50, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'0.04, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'41.84, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'-0.04, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-41.84, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'12.47, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'12474.60, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-12.47, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-12474.60, -J/mol'
+
+# Using -kcal/mol/T as raw data
+>>> ds = DeltaS(10, '-kcal/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'-10.00, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'-10000.00, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'10.00, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'10000.00, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-2981.50, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-2981500.00, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'2981.50, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'2981500.00, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'-41.84, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-41840.00, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'41.84, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'41840.00, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-12474.60, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-12474596.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'12474.60, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'12474596.00, -J/mol'
+
+# Using -cal/mol/T as raw data
+>>> ds = DeltaS(10, '-cal/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'-0.01, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'-10.00, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'0.01, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'10.00, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-2.98, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-2981.50, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'2.98, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'2981.50, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'-0.04, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-41.84, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'0.04, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'41.84, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-12.47, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-12474.60, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'12.47, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'12474.60, -J/mol'
+
+# Using kcal/mol as raw data
+>>> ds = DeltaS(10, 'kcal/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'0.03, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'33.54, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'-0.03, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'-33.54, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'10.00, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'10000.00, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-10.00, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-10000.00, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'0.14, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'140.33, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'-0.14, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-140.33, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'41.84, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'41840.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-41.84, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-41840.00, -J/mol'
+
+# Using cal/mol as raw data
+>>> ds = DeltaS(10, 'cal/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, cal/mol'
+>>> '%.6f, %s' % ds.get_data('kcal/mol/K')
+'0.000034, kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('cal/mol/K')
+'0.034, cal/mol/K'
+>>> '%.6f, %s' % ds.get_data('-kcal/mol/K')
+'-0.000034, -kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('-cal/mol/K')
+'-0.034, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'0.01, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'10.00, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-0.01, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-10.00, -cal/mol'
+>>> '%.5f, %s' % ds.get_data('kJ/mol/K')
+'0.00014, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'0.14, J/mol/K'
+>>> '%.5f, %s' % ds.get_data('-kJ/mol/K')
+'-0.00014, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-0.14, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'0.04, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'41.84, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-0.04, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-41.84, -J/mol'
+
+# Using -kcal/mol as raw data
+>>> ds = DeltaS(10, '-kcal/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'-0.03, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'-33.54, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'0.03, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'33.54, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-10.00, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-10000.00, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'10.00, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'10000.00, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'-0.14, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-140.33, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'0.14, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'140.33, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-41.84, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-41840.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'41.84, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'41840.00, -J/mol'
+
+# Using -cal/mol as raw data
+>>> ds = DeltaS(10, '-cal/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -cal/mol'
+>>> '%.6f, %s' % ds.get_data('kcal/mol/K')
+'-0.000034, kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('cal/mol/K')
+'-0.034, cal/mol/K'
+>>> '%.6f, %s' % ds.get_data('-kcal/mol/K')
+'0.000034, -kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('-cal/mol/K')
+'0.034, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-0.01, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-10.00, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'0.01, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'10.00, -cal/mol'
+>>> '%.5f, %s' % ds.get_data('kJ/mol/K')
+'-0.00014, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-0.14, J/mol/K'
+>>> '%.5f, %s' % ds.get_data('-kJ/mol/K')
+'0.00014, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'0.14, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-0.04, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-41.84, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'0.04, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'41.84, -J/mol'
+
+# Using kJ/mol/T as raw data
+>>> ds = DeltaS(10, 'kJ/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'2.39, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'2390.06, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'-2.39, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'-2390.06, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'712.60, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'712595.60, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-712.60, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-712595.60, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'10.00, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'10000.00, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'-10.00, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-10000.00, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'2981.50, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'2981500.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-2981.50, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-2981500.00, -J/mol'
+
+# Using J/mol/T as raw data
+>>> ds = DeltaS(10, 'J/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, J/mol/K'
+>>> '%.3f, %s' % ds.get_data('kcal/mol/K')
+'0.002, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'2.39, cal/mol/K'
+>>> '%.3f, %s' % ds.get_data('-kcal/mol/K')
+'-0.002, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'-2.39, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'0.71, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'712.60, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-0.71, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-712.60, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'0.01, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'10.00, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'-0.01, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-10.00, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'2.98, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'2981.50, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-2.98, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-2981.50, -J/mol'
+
+# Using -kJ/mol/T as raw data
+>>> ds = DeltaS(10, '-kJ/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'-2.39, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'-2390.06, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'2.39, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'2390.06, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-712.60, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-712595.60, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'712.60, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'712595.60, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'-10.00, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-10000.00, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'10.00, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'10000.00, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-2981.50, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-2981500.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'2981.50, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'2981500.00, -J/mol'
+
+# Using -J/mol/T as raw data
+>>> ds = DeltaS(10, '-J/mol/K', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -J/mol/K'
+>>> '%.3f, %s' % ds.get_data('kcal/mol/K')
+'-0.002, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'-2.39, cal/mol/K'
+>>> '%.3f, %s' % ds.get_data('-kcal/mol/K')
+'0.002, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'2.39, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-0.71, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-712.60, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'0.71, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'712.60, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'-0.01, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-10.00, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'0.01, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'10.00, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-2.98, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-2981.50, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'2.98, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'2981.50, -J/mol'
+
+# Using kJ/mol as raw data
+>>> ds = DeltaS(10, 'kJ/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'0.01, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'8.02, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'-0.01, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'-8.02, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'2.39, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'2390.06, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'-2.39, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-2390.06, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'0.03, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'33.54, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'-0.03, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-33.54, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'10.00, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'10000.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-10.00, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-10000.00, -J/mol'
+
+# Using J/mol as raw data
+>>> ds = DeltaS(10, 'J/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, J/mol'
+>>> '%.5f, %s' % ds.get_data('kcal/mol/K')
+'0.00001, kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('cal/mol/K')
+'0.008, cal/mol/K'
+>>> '%.5f, %s' % ds.get_data('-kcal/mol/K')
+'-0.00001, -kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('-cal/mol/K')
+'-0.008, -cal/mol/K'
+>>> '%.3f, %s' % ds.get_data('kcal/mol')
+'0.002, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'2.39, cal/mol'
+>>> '%.3f, %s' % ds.get_data('-kcal/mol')
+'-0.002, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'-2.39, -cal/mol'
+>>> '%.5f, %s' % ds.get_data('kJ/mol/K')
+'0.00003, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'0.03, J/mol/K'
+>>> '%.5f, %s' % ds.get_data('-kJ/mol/K')
+'-0.00003, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'-0.03, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'0.01, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'10.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'-0.01, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'-10.00, -J/mol'
+
+# Using -kJ/mol as raw data
+>>> ds = DeltaS(10, '-kJ/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('kcal/mol/K')
+'-0.01, kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('cal/mol/K')
+'-8.02, cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol/K')
+'0.01, -kcal/mol/K'
+>>> '%.2f, %s' % ds.get_data('-cal/mol/K')
+'8.02, -cal/mol/K'
+>>> '%.2f, %s' % ds.get_data('kcal/mol')
+'-2.39, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-2390.06, cal/mol'
+>>> '%.2f, %s' % ds.get_data('-kcal/mol')
+'2.39, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'2390.06, -cal/mol'
+>>> '%.2f, %s' % ds.get_data('kJ/mol/K')
+'-0.03, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-33.54, J/mol/K'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol/K')
+'0.03, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'33.54, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-10.00, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-10000.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'10.00, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'10000.00, -J/mol'
+
+# Using -J/mol as raw data
+>>> ds = DeltaS(10, '-J/mol', t)
+>>> '%.2f, %s' % ds.get_raw_data()
+'10.00, -J/mol'
+>>> '%.5f, %s' % ds.get_data('kcal/mol/K')
+'-0.00001, kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('cal/mol/K')
+'-0.008, cal/mol/K'
+>>> '%.5f, %s' % ds.get_data('-kcal/mol/K')
+'0.00001, -kcal/mol/K'
+>>> '%.3f, %s' % ds.get_data('-cal/mol/K')
+'0.008, -cal/mol/K'
+>>> '%.3f, %s' % ds.get_data('kcal/mol')
+'-0.002, kcal/mol'
+>>> '%.2f, %s' % ds.get_data('cal/mol')
+'-2.39, cal/mol'
+>>> '%.3f, %s' % ds.get_data('-kcal/mol')
+'0.002, -kcal/mol'
+>>> '%.2f, %s' % ds.get_data('-cal/mol')
+'2.39, -cal/mol'
+>>> '%.5f, %s' % ds.get_data('kJ/mol/K')
+'-0.00003, kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('J/mol/K')
+'-0.03, J/mol/K'
+>>> '%.5f, %s' % ds.get_data('-kJ/mol/K')
+'0.00003, -kJ/mol/K'
+>>> '%.2f, %s' % ds.get_data('-J/mol/K')
+'0.03, -J/mol/K'
+>>> '%.2f, %s' % ds.get_data('kJ/mol')
+'-0.01, kJ/mol'
+>>> '%.2f, %s' % ds.get_data('J/mol')
+'-10.00, J/mol'
+>>> '%.2f, %s' % ds.get_data('-kJ/mol')
+'0.01, -kJ/mol'
+>>> '%.2f, %s' % ds.get_data('-J/mol')
+'10.00, -J/mol'
+
+# Test the affinity class
+
+# Using /M as raw data
+>>> affinity = Affinity(1000000, '/M')
+>>> '%.2f, %s' % affinity.get_raw_data()
+'1000000.00, /M'
+>>> '%.2f, %s' % affinity.get_data('/M')
+'1000000.00, /M'
+>>> '%.6f, %s' % affinity.get_data('M')
+'0.000001, M'
+>>> '%.3f, %s' % affinity.get_data('mM')
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('uM')
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('nM')
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('pM')
+'1000000.00, pM'
+
+# Using M as raw data
+>>> affinity = Affinity(0.000001, 'M')
+>>> '%.6f, %s' % affinity.get_raw_data()
+'0.000001, M'
+>>> '%.2f, %s' % affinity.get_data('/M')
+'1000000.00, /M'
+>>> '%.6f, %s' % affinity.get_data('M')
+'0.000001, M'
+>>> '%.3f, %s' % affinity.get_data('mM')
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('uM')
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('nM')
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('pM')
+'1000000.00, pM'
+
+# Using mM as raw data
+>>> affinity = Affinity(0.001, 'mM')
+>>> '%.3f, %s' % affinity.get_raw_data()
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('/M')
+'1000000.00, /M'
+>>> '%.6f, %s' % affinity.get_data('M')
+'0.000001, M'
+>>> '%.3f, %s' % affinity.get_data('mM')
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('uM')
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('nM')
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('pM')
+'1000000.00, pM'
+
+# Using uM as raw data
+>>> affinity = Affinity(1, 'uM')
+>>> '%.2f, %s' % affinity.get_raw_data()
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('/M')
+'1000000.00, /M'
+>>> '%.6f, %s' % affinity.get_data('M')
+'0.000001, M'
+>>> '%.3f, %s' % affinity.get_data('mM')
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('uM')
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('nM')
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('pM')
+'1000000.00, pM'
+
+# Using nM as raw data
+>>> affinity = Affinity(1000, 'nM')
+>>> '%.2f, %s' % affinity.get_raw_data()
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('/M')
+'1000000.00, /M'
+>>> '%.6f, %s' % affinity.get_data('M')
+'0.000001, M'
+>>> '%.3f, %s' % affinity.get_data('mM')
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('uM')
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('nM')
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('pM')
+'1000000.00, pM'
+
+# Using pM as raw data
+>>> affinity = Affinity(1000000, 'pM')
+>>> '%.2f, %s' % affinity.get_raw_data()
+'1000000.00, pM'
+>>> '%.2f, %s' % affinity.get_data('/M')
+'1000000.00, /M'
+>>> '%.6f, %s' % affinity.get_data('M')
+'0.000001, M'
+>>> '%.3f, %s' % affinity.get_data('mM')
+'0.001, mM'
+>>> '%.2f, %s' % affinity.get_data('uM')
+'1.00, uM'
+>>> '%.2f, %s' % affinity.get_data('nM')
+'1000.00, nM'
+>>> '%.2f, %s' % affinity.get_data('pM')
+'1000000.00, pM'
+
+# Test the DeltaCp class
+>>> delta_cp = DeltaCp(10, 'kcal/mol/K')
+>>> '%.2f, %s' % delta_cp.get_data('kJ/mol/K')
+'41.84, kJ/mol/K'
+>>> '%.2f, %s' % delta_cp.get_data('J/mol/K')
+'41840.00, J/mol/K'
+>>> '%.2f, %s' % delta_cp.get_raw_data()
+'10.00, kcal/mol/K'
+
+>>> delta_cp = DeltaCp(10, 'cal/mol/K')
+>>> '%.2f, %s' % delta_cp.get_data('J/mol/K')
+'41.84, J/mol/K'
+>>> '%.2f, %s' % delta_cp.get_data('kJ/mol/K')
+'0.04, kJ/mol/K'
+>>> '%.2f, %s' % delta_cp.get_raw_data()
+'10.00, cal/mol/K'
+
+>>> delta_cp = DeltaCp(4.184, 'kJ/mol/K')
+>>> '%.2f, %s' % delta_cp.get_data('kcal/mol/K')
+'1.00, kcal/mol/K'
+>>> '%.2f, %s' % delta_cp.get_data('cal/mol/K')
+'1000.00, cal/mol/K'
+>>> '%.2f, %s' % delta_cp.get_raw_data()
+'4.18, kJ/mol/K'
+
+>>> delta_cp = DeltaCp(4.184, 'J/mol/K')
+>>> '%.2f, %s' % delta_cp.get_data('cal/mol/K')
+'1.00, cal/mol/K'
+>>> '%.3f, %s' % delta_cp.get_data('kcal/mol/K')
+'0.001, kcal/mol/K'
+>>> '%.2f, %s' % delta_cp.get_raw_data()
+'4.18, J/mol/K'
+
+# Test the ITCData class
+>>> affinity = Affinity(10.0, 'uM')
+>>> temperature = Temperature(25, 'C')
+>>> delta_s = DeltaS(10.0, 'kcal/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_s=delta_s, temperature=temperature)
+>>> print itc_data
+<ITCData(Kd=10.000, DG=-28.54, DH=13.30, TDS=41.84, T=298.15)>
+>>>
+>>> delta_g = DeltaG(-6821, 'cal/mol')
+>>> itc_data = ITCData(delta_g=delta_g, delta_s=delta_s, temperature=temperature)
+>>> print itc_data
+<ITCData(Kd=10.004, DG=-28.54, DH=13.30, TDS=41.84, T=298.15)>
+>>>
+>>> delta_h = DeltaH(-4431, 'cal/mol')
+>>> itc_data = ITCData(delta_g=delta_g, delta_h=delta_h, temperature=temperature)
+>>> print itc_data
+<ITCData(Kd=10.004, DG=-28.54, DH=-18.54, TDS=10.00, T=298.15)>
+>>>
+>>> affinity = Affinity(0.00001, 'M')
+>>> temperature = Temperature(298.15, 'K')
+>>> delta_s = DeltaS(10000.0, 'J/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_s=delta_s, temperature=temperature)
+>>> print itc_data
+<ITCData(Kd=10.000, DG=-28.54, DH=-18.54, TDS=10.00, T=298.15)>
+>>>
+>>> affinity = Affinity(0.00001, 'M')
+>>> delta_g = DeltaG(-6821, 'cal/mol')
+>>> delta_h = DeltaH(-4431, 'cal/mol')
+>>> itc_data = ITCData(affinity=affinity, delta_g=delta_g, delta_h=delta_h)
+>>> print itc_data
+<ITCData(Kd=10.000, DG=-28.54, DH=-18.54, TDS=10.00, T=298.14)>
+>>>
+>>> "value=%.2f" % itc_data.affinity
+'value=10.00'
+>>> "error=%r" % itc_data.affinity_exp_err
+'error=None'
+>>> "unit=%s" % itc_data.affinity_unit
+'unit=uM'
+>>> "value=%.2f" % itc_data.delta_g
+'value=-28.54'
+>>> "error=%r" % itc_data.delta_g_exp_err
+'error=None'
+>>> "unit=%s" % itc_data.delta_g_unit
+'unit=kJ/mol'
+>>> "value=%.2f" % itc_data.delta_h
+'value=-18.54'
+>>> "error=%r" % itc_data.delta_h_exp_err
+'error=None'
+>>> "unit=%s" % itc_data.delta_h_unit
+'unit=kJ/mol'
+>>> "value=%.2f" % itc_data.delta_s
+'value=10.00'
+>>> "error=%r" % itc_data.delta_s_exp_err
+'error=None'
+>>> "unit=%s" % itc_data.delta_s_unit
+'unit=kJ/mol'
+>>> "value=%.2f" % itc_data.temperature
+'value=298.14'
+>>> "error=%r" % itc_data.temperature_exp_err
+'error=None'
+>>> "unit=%s" % itc_data.temperature_unit
+'unit=K'
+>>>
+>>> itc_data.data_quality_warnings
+[]
+>>> affinity = Affinity(10.0, 'uM')
+>>> delta_g = DeltaG(-6821, 'cal/mol')
+>>> delta_h = DeltaH(-4431, 'cal/mol')
+>>> temperature = Temperature(25, 'C')
+>>> delta_s = DeltaS(10.0, 'kJ/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_g=delta_g, delta_h=delta_h, delta_s=delta_s, temperature=temperature)
+>>> itc_data.data_quality_warnings
+[]
+>>>
+>>> affinity = Affinity(400.0, 'uM')
+>>> delta_g = DeltaG(-6821, 'cal/mol')
+>>> delta_h = DeltaH(-4431, 'cal/mol')
+>>> temperature = Temperature(25, 'C')
+>>> delta_s = DeltaS(10.0, 'kJ/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_g=delta_g, delta_h=delta_h, delta_s=delta_s, temperature=temperature)
+>>> itc_data.data_quality_warnings
+[(2, 'DeltaG (-28.54) != -R.T.ln(Ka) (-19.40). Tolerance range from -28.82 to -28.25'), (3, 'Affinity (400.0000) greater than 313.4408. It is difficult to interpred ITC data if Affinity is greater than 313.4408 as the sigmoidal curve becomes too shallow.')]
+>>>
+>>> affinity = Affinity(10.0, 'uM')
+>>> delta_g = DeltaG(-68.21, 'cal/mol')
+>>> delta_h = DeltaH(-4431, 'cal/mol')
+>>> temperature = Temperature(25, 'C')
+>>> delta_s = DeltaS(10.0, 'kJ/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_g=delta_g, delta_h=delta_h, delta_s=delta_s, temperature=temperature)
+>>> itc_data.data_quality_warnings # doctest: +NORMALIZE_WHITESPACE
+[(2, 'DeltaG (-0.29) != -R.T.ln(Ka) (-28.54). Tolerance range from -0.29 to -0.28'),
+ (2, 'DeltaG (-0.29) != DeltaH (-18.54) - T.DeltaS (10.00) (=-28.54).  Tolerance range from -0.29 to -0.28'),
+ (3, 'DeltaG (-0.29) greater than -20.00. It is difficult to interpred ITC data if DeltaG is greater than -20.00 as the sigmoidal curve becomes too shallow.')]
+>>>
+>>> affinity = Affinity(10.0, 'uM')
+>>> delta_g = DeltaG(-6821, 'cal/mol')
+>>> delta_h = DeltaH(-44, 'cal/mol')
+>>> temperature = Temperature(25, 'C')
+>>> delta_s = DeltaS(10.0, 'kJ/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_g=delta_g, delta_h=delta_h, delta_s=delta_s, temperature=temperature)
+>>> itc_data.data_quality_warnings # doctest: +NORMALIZE_WHITESPACE
+[(2, 'DeltaG (-28.54) != DeltaH (-0.18) - T.DeltaS (10.00) (=-10.18).  Tolerance range from -28.82 to -28.25'),
+ (3, 'DeltaH (-0.18) in range 10.00 to -10.00. It is difficult to interpret ITC data as DeltaH approaches 0.')]
+>>>
+>>> affinity = Affinity(10.0, 'uM')
+>>> delta_g = DeltaG(-6821, 'cal/mol')
+>>> delta_h = DeltaH(-4431, 'cal/mol')
+>>> temperature = Temperature(25, 'C')
+>>> delta_s = DeltaS(100.0, 'kJ/mol', temperature)
+>>> itc_data = ITCData(affinity=affinity, delta_g=delta_g, delta_h=delta_h, delta_s=delta_s, temperature=temperature)
+>>> itc_data.data_quality_warnings
+[(2, 'DeltaG (-28.54) != DeltaH (-18.54) - T.DeltaS (100.00) (=-118.54).  Tolerance range from -28.82 to -28.25')]

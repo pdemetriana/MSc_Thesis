@@ -1,0 +1,121 @@
+## -*- coding: utf-8 -*-
+
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+"http://www.w3.org/TR/html4/strict.dtd">
+<html>
+<head>
+    <title>${self.title()}</title>
+    ${self.head()}
+</head>
+<body>
+    <div id="container">
+        <div id="header">
+            <h1>SCORPIO version 2.0
+            <a href="/"><img src=${request.static_url('scorpio:static/logos/scorpio_logo.png')} alt="SCORPIO logo" /></a>
+            </h1>
+            <h2>Structure-Calorimetry Of Reported Protein Interactions Online</h2>
+        </div>
+        <div id="menu">
+            ${self.menu()}
+        </div>
+        <div id="bar">
+            ${self.submenu()}
+            ${self.logos()}
+        </div>
+        <div id="main">
+            ${self.main()}
+        </div>
+        <div id="footer">
+            ${self.footer()}
+        </div>
+    </div>
+
+</body>
+</html>
+
+
+<%def name="title()">SCORPIO</%def>
+
+<%def name="head()">
+    ${h.stylesheet_link(request.static_url('scorpio:static/css/main3.css'))}
+</%def>
+
+<%def name="menu()">
+    <ul>
+        <li><a href="${request.route_url('index')}">Home</a></li>
+        <li><a href="${request.route_url('protein_root_name_br', page='1')}">Browse proteins</a></li>
+        <li><a href="${request.route_url('ligand_br', page='1')}">Browse ligands</a></li>
+        <li><a href="${request.route_url('itc_br', page='1')}">Browse ITC data</a></li>
+        <li><a href="${request.route_url('structure_br', page='1')}">Browse structures</a></li>
+        <li><a href="${request.route_url('citation_br', page='1')}">Browse citations</a></li>
+    </ul>
+</%def>
+
+<%def name="bartitle()">
+</%def>
+
+<%def name="submenu()">
+</%def>
+
+<%def name="logos()">
+    <div id="logos">
+        <hr />
+        <a href="http://www.ismb.lon.ac.uk" target="_blank" ><img src=${request.static_url('scorpio:static/logos/small-ISMB-logo.jpg')} alt="ISMB logo" /></a>
+        <hr />
+        <a href="http://www.biochemj.org" target="_blank" ><img src=${request.static_url('scorpio:static/logos/BJ_Logo.gif')} alt="Biochemical Journal logo" /></a>
+        <hr />
+    </div>
+</%def>
+
+<%def name="main()">
+        <div id="main">
+        </div>
+</%def>
+
+<%def name="subedit()">
+</%def>
+
+
+<%def name="footer()">
+    <h3>Disclaimer</h3>
+
+    <p>
+    This is an ongoing project and, although SCORPIO has been curated with great
+    care, it may contain errors. If you spot an error please
+    <a href="${request.route_url('home', action='contact')}">contact us</a>.
+    We take no responsibility for the data within SCORPIO, nor any responsibility
+    for the consequences of using the data within SCORPIO. No contract, warranty or
+    liability is implied by using the data within SCORPIO.
+    </p>
+
+    <p>If you make use of SCORPIO please cite <a href="http://dx.doi.org/10.1016/j.jmb.2008.09.073" target="_blank" >J. Mol. Biol. [2008] 384, 1002-1017</a><br/>
+        Tjelvar S. G. Olsson, Mark A. Williams, Will R. Pitt and John E. Ladbury</p>
+</%def>
+
+<%def name="safeligandlink(record)">
+    %if record.ligand:
+        ${h.link_to(record.ligand.name, request.route_url('ligand_v', id=record.ligand.id))}
+        <a class="thumbnail" href="/ligand/id/${record.ligand.id}">${record.ligand.name}
+        <span><img src=${request.static_url('scorpio:static/ligand_diagrams/${record.ligand.id}.png')} alt="${record.ligand.name} diagram" /><br />${record.ligand.name}</span></a>
+    %endif
+</%def>
+
+<%def name="safeproteinlink(record)">
+    ${h.link_to(record.protein.name, request.route_url('protein_v', id=record.protein.id))}
+</%def>
+
+<%def name="saferound(value, sigfig=0)">
+    %if isinstance(value, float):
+        ${round(value, sigfig)}
+    %else:
+        ${value}
+    %endif
+</%def>
+
+<%def name="saferoundlink(value, url, sigfig=0)">
+    %if isinstance(value, float):
+        ${h.link_to(round(value, sigfig), url)}
+    %else:
+        ${value}
+    %endif
+</%def>

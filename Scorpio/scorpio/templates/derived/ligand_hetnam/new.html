@@ -1,0 +1,11 @@
+<%inherit file="/derived/ligand.html" />
+<%namespace file="fields.html" name="fields" import="*"/>
+
+<%def name="main()">
+    <h3>Create a new ligand HETNAM</h3>
+    ${request.tmpl_context.form.start_with_layout(request.route_url('ligand_hetnam', action='create'), table_class='form')}
+    ${request.tmpl_context.form.field(label='Ligand HETNAM', type='text', name='hetnam', required=True)}
+    ${request.tmpl_context.form.action_bar(request.tmpl_context.form.submit(name='submit', value='Create ligand HETNAM'))}
+    ${request.tmpl_context.form.end_with_layout(hidden_field_names=['id'])}
+</%def>
+
