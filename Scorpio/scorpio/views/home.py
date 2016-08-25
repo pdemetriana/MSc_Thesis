@@ -35,13 +35,4 @@ class Home(object):
     def contact(self):
         return {}
 
-'''            ${self.bartitle()}
-            %if h.authorized(h.UserIn(['admin'])):
-                <h3>Add</h3>
-                <h4>General data</h4>
-                ${self.edit()}
-                <h4>Specific data</h4>
-                ${self.subedit()}
-                Fields marked by a * are required.
-            %endif
-'''
+
