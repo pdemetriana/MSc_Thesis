@@ -1,5 +1,7 @@
 #!/usr/bin/env python
 
+# Original ProCLic script
+
 #Author: Dale Housler
 
 #This programs creates the conformation files in the correct structure for the ProCLic_MENU.py MENU option 1. run

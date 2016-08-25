@@ -78,8 +78,14 @@ TS=''
 
 PDB_ref=os.path.basename(PDB_fileloc)
 
+
 ##### Finds the PDB file of interest, if there are more than one relies on user entry #####
 
+###########################################################################################
+#																						  #
+#	 Mimic user's choices without Menu to proceed with chain separation.			 	  #
+#																						  #
+###########################################################################################
 ## regular expressions ##
 mlc_name=PDB_ref+"[A-Z0-9]+\.pdb"	
 

@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Original ProCLic script with an addition, lines 104-141, from
+# Demetriana Pandi, July 2016.
+
 #####
 # Author: Dale Housler
 # Creaton Date: 17-05-2014
@@ -100,6 +103,12 @@ import sys
 
 start_directory = os.getcwd()
 
+########################################################################################################
+############################################ New Section ###############################################
+#																									   #
+# Collect chain and ligand names that would otherwise be inputed by the user from the Menu. 		   #
+#																									   #
+########################################################################################################
 #	regular expressions#
 chain_regex="PTNChain.\.pdb"
 
@@ -130,8 +139,8 @@ for f in pdf_file_list:
 			ch_letter=file_name[last_letter_place]
 			chain_list.append(ch_letter)
 	
-#print ("chains: ", chain_list)
-#print (ligands_full_names)
+########################################################################################################
+########################################################################################################
 
 ##### Make directories #####
 

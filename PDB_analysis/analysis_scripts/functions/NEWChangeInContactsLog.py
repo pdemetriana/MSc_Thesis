@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 
+# Original ProCLic script with the addition in lines 29-42 by
+# Demetriana Pandi, July 2016
+
 # Author: Dale Housler
 # Date: 16-08-2014
 # Python: 3.3
@@ -23,12 +26,20 @@ from collections import defaultdict #Allows dictionary set-up
 #Get the starting directory 
 start_directory = os.getcwd()
 
+########################## New Section 	######################################
+#																			 #
+# To collect chain and ligand instead of inputing them using the Menu.		 #
+#																			 #
+##############################################################################
+
 chain_file=[f for f in os.listdir(start_directory) if f.endswith(".pdb")]
 ligand_file=[f for f in os.listdir(start_directory) if f.endswith(".mol2")]
 
 #User enters the files to use, as there can be manu options
 ptn_chain_file = chain_file[0]
 lig_chain_file = ligand_file[0]
+
+##############################################################################
 
 def runProACT2_complex_Formation(ptn_chain_file,lig_chain_file):
 
